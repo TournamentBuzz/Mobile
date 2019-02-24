@@ -1,12 +1,20 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { ThemeContext, getTheme } from "react-native-material-ui";
+import Home from "./views/Home";
+
+const uiTheme = {
+  palette: {
+    primaryColor: "#b3a369"
+  }
+};
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
+      <ThemeContext.Provider value={getTheme(uiTheme)}>
+        <Home />
+      </ThemeContext.Provider>
     );
   }
 }
@@ -14,8 +22,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
