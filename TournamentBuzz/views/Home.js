@@ -2,46 +2,49 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import Container from "../components/Container";
 
-import { Toolbar, BottomNavigation, Icon } from "react-native-material-ui";
+import { Appbar, BottomNavigation } from "react-native-paper";
+
+const HomeRoute = () => <Text>Home</Text>;
+
+const ExploreRoute = () => <Text>Explore</Text>;
+
+const AccountRoute = () => <Text>Account</Text>;
 
 class Main extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { active: "home" };
+    this.state = {
+      index: 0,
+      routes: [
+        { key: "home", title: "Home", icon: "home" },
+        { key: "explore", title: "Explore", icon: "explore" },
+        { key: "account", title: "Account", icon: "person" }
+      ]
+    };
   }
-  componentWillUpdate;
+
+  _handleIndexChange = index => this.setState({ index });
+
+  _renderScene = BottomNavigation.SceneMap({
+    home: HomeRoute,
+    explore: ExploreRoute,
+    account: AccountRoute
+  });
+
   render() {
     return (
       <Container>
         <View>
-          <Toolbar centerElement="TournamentBuzz" />
+          <Appbar.Header>
+            <Appbar.Content title="TournamentBuzz" />
+          </Appbar.Header>
         </View>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text>{this.state.active}</Text>
-        </View>
-        <BottomNavigation active={this.state.active}>
-          <BottomNavigation.Action
-            key="home"
-            icon="home"
-            label="Home"
-            onPress={() => this.setState({ active: "home" })}
-          />
-          <BottomNavigation.Action
-            key="explore"
-            icon="explore"
-            label="Explore"
-            onPress={() => this.setState({ active: "explore" })}
-          />
-          <BottomNavigation.Action
-            key="account"
-            icon="person"
-            label="Account"
-            onPress={() => this.setState({ active: "account" })}
-          />
-        </BottomNavigation>
+        <BottomNavigation
+          navigationState={this.state}
+          onIndexChange={this._handleIndexChange}
+          renderScene={this._renderScene}
+        />
       </Container>
     );
   }

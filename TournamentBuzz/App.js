@@ -1,20 +1,22 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ThemeContext, getTheme } from "react-native-material-ui";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import Home from "./views/Home";
 
-const uiTheme = {
-  palette: {
-    primaryColor: "#b3a369"
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#b3a369"
   }
 };
 
 export default class App extends React.Component {
   render() {
     return (
-      <ThemeContext.Provider value={getTheme(uiTheme)}>
+      <PaperProvider theme={theme}>
         <Home />
-      </ThemeContext.Provider>
+      </PaperProvider>
     );
   }
 }
