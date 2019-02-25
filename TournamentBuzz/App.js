@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import Home from "./views/Home";
+import Main from "./views/Main";
 
 const theme = {
   ...DefaultTheme,
@@ -15,7 +15,7 @@ export default class App extends React.Component {
   render() {
     return (
       <PaperProvider theme={theme}>
-        <Home />
+        <Main />
       </PaperProvider>
     );
   }

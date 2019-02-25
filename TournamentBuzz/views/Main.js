@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import Container from "../components/Container";
-
 import { Appbar, BottomNavigation } from "react-native-paper";
 
-const HomeRoute = () => <Text>Home</Text>;
+import Container from "../components/Container";
+import TournamentList from "../components/TournamentList";
+
+const HomeRoute = () => <TournamentList />;
 
 const ExploreRoute = () => <Text>Explore</Text>;
 
