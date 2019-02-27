@@ -4,12 +4,14 @@ import { Appbar, BottomNavigation } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentList from "../components/TournamentList";
+import TournamentDetail from "../components/TournamentDetail";
+import Account from "../components/Account";
 
 const HomeRoute = () => <TournamentList />;
 
 const ExploreRoute = () => <Text>Explore</Text>;
 
-const AccountRoute = () => <Text>Account</Text>;
+const AccountRoute = () => <Account />;
 
 class Main extends Component {
   constructor(props) {
