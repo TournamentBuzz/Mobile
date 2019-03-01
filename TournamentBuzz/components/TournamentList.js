@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Title } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentCard from "./TournamentCard";
+import TournamentAPI from "../API/TournamentAPI.js";
 
 class TournamentList extends Component {
   constructor(props) {
@@ -13,34 +14,39 @@ class TournamentList extends Component {
     };
   }
 
-  // async createTournamentList() {
-  //   // query api and get tournaments
-  // }
+  async createTournamentList() {
+    let tournaments = undefined;
+    try {
+      tournaments = await TournamentAPI.getTournaments();
+    } catch (error) {
+      console.log(error);
+      let message = <Title>Error loading tournaments</Title>;
+      this.setState({ tournamentList: message });
+      return;
+    }
+    if (tournaments.length < 1) {
+      let message = <Title>No upcoming tournaments</Title>;
+      this.setState({ tournamentList: message });
+      return;
+    }
+    let list = [];
+    for (let tournament of tournaments) {
+      let card = (
+        <TournamentCard
+          key={tournament.id}
+          id={tournament.id}
+          name={tournament.tournamentName}
+          sponsor={tournament.creator}
+          date={new Date(Date.parse(tournament.startDate)).toDateString()}
+        />
+      );
+      list.push(card);
+    }
+    this.setState({ tournamentList: list });
+  }
 
   async componentDidMount() {
-    // await this.createTournamentList();
-    let list = [];
-    let testTournament = (
-      <TournamentCard
-        key="id1"
-        id="id1"
-        name="Bob's Table Tennis Tournament"
-        sponsor="Bob Waters"
-        date="3/14/19"
-      />
-    );
-    list.push(testTournament);
-    let testTournament2 = (
-      <TournamentCard
-        key="id2"
-        id="id2"
-        name="Bowling Tournament"
-        sponsor="Tech Rec"
-        date="3/19/19"
-      />
-    );
-    list.push(testTournament2);
-    this.setState({ tournamentList: list });
+    await this.createTournamentList();
   }
 
   render() {
