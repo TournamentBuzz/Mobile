@@ -6,10 +6,11 @@ import Container from "../components/Container";
 import TournamentList from "../components/TournamentList";
 import TournamentDetail from "../components/TournamentDetail";
 import Account from "../components/Account";
+import Login from "../components/Login";
 
-const HomeRoute = () => <TournamentList />;
+const HomeRoute = () => <Text>Home</Text>;
 
-const ExploreRoute = () => <Text>Explore</Text>;
+const ExploreRoute = () => <TournamentList />;
 
 const AccountRoute = () => <Account />;
 

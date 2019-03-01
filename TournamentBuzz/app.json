@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.tournamentbuzz.mobile",
       "supportsTablet": true
+    },
+    "android" : {
+      "package": "com.tournamentbuzz.mobile"
     }
   }
 }
