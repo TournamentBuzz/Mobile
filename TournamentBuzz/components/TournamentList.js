@@ -38,6 +38,7 @@ class TournamentList extends Component {
           name={tournament.tournamentName}
           sponsor={tournament.creator}
           date={new Date(Date.parse(tournament.startDate)).toDateString()}
+          navigation={this.props.navigation}
         />
       );
       list.push(card);

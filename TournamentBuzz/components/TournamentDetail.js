@@ -3,69 +3,87 @@ import { View, Text } from "react-native";
 import { Title, ActivityIndicator } from "react-native-paper";
 
 import Container from "../components/Container";
+import TournamentAPI from "../API/TournamentAPI.js";
 
 class TournamentDetail extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        tournamentInfo: null,
-        matchList: null,
-        teamList: null
-      };
-    }
-  
-    // async createTournamentInfo() {
-    //   // query api and get tournament info
-    // }
-
-    // async createMatchList() {
-    //   // query api and get matches
-    // }
-
-    // async createTeamList() {
-    //   // query api and get matches
-    // }
-  
-    async componentDidMount() {
-      let info = new Map();
-      info.set("name", "Bob's Table Tennis Tournament");
-      info.set("sponsor", "Bob Waters");
-      info.set("location", "CRC");
-      info.set("scoringType", "Points");
-      info.set("tournamentType", "Single Elimination");
-      info.set("maxTeamSize", 4);
-      info.set("entryCost", 0);
-      info.set("maxTeams", 32);
-      info.set("startDate", "10/28/2019");
-      info.set("endDate", "10/29/2019");
-      this.setState({ tournamentInfo: info });
-    }
-  
-    render() {
-      return (
-        <Container>
-          {this.state.tournamentInfo === null ? (
-            <View>
-              <ActivityIndicator animating={true} />
-            </View>
-          ) : (
-            <View>
-            <Title>{this.state.tournamentInfo.get("name")}</Title>
-            <Text>{"Sponsor: " + this.state.tournamentInfo.get("sponsor")}</Text>
-            <Text>{"Location: " + this.state.tournamentInfo.get("location")}</Text>
-            <Text>{"Scoring Type: " + this.state.tournamentInfo.get("scoringType")}</Text>
-            <Text>{"Tournament Type: " + this.state.tournamentInfo.get("tournamentType")}</Text>
-            <Text>{"Max Team Size: " + this.state.tournamentInfo.get("maxTeamSize")}</Text>
-            <Text>{"Entry Cost: " + this.state.tournamentInfo.get("entryCost")}</Text>
-            <Text>{"Max Teams: " + this.state.tournamentInfo.get("maxTeams")}</Text>
-            <Text>{"Start Date: " + this.state.tournamentInfo.get("startDate")}</Text>
-            <Text>{"End Date: " + this.state.tournamentInfo.get("endDate")}</Text>
-            </View>
-          )}
-        </Container>
-      );
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      tournamentName: null,
+      creator: null,
+      description: null,
+      maxTeamSize: null,
+      location: null,
+      scoringType: null,
+      tournamentType: null,
+      entryCost: null,
+      maxTeams: null,
+      startDate: null,
+      endDate: null,
+      teamList: null
+    };
   }
-  
-  export default TournamentDetail;
-  
+
+  async getTournamentDetails() {
+    const tournamentId = this.props.navigation.getParam("tournamentId", null);
+    console.log(tournamentId);
+    let details = undefined;
+    try {
+      details = await TournamentAPI.getTournament(tournamentId);
+    } catch (error) {
+      this.props.navigation.goBack();
+    }
+    if (details === undefined) {
+      this.props.navigation.goBack();
+      return;
+    }
+    if (details.length < 1) {
+      this.props.navigation.goBack();
+      return;
+    }
+    details = details[0];
+    details.startDate = new Date(details.startDate).toDateString();
+    details.endDate = new Date(details.endDate).toDateString();
+    this.setState(details);
+  }
+
+  // async createMatchList() {
+  //   // query api and get matches
+  // }
+
+  // async createTeamList() {
+  //   // query api and get matches
+  // }
+
+  async componentDidMount() {
+    console.log(this.props.tournamentId);
+    await this.getTournamentDetails();
+  }
+
+  render() {
+    return (
+      <Container>
+        {this.state.tournamentName === null ? (
+          <View>
+            <ActivityIndicator animating={true} />
+          </View>
+        ) : (
+          <View>
+            <Title>{this.state.tournamentName}</Title>
+            <Text>{"Sponsor: " + this.state.creator}</Text>
+            <Text>{"Location: " + this.state.location}</Text>
+            <Text>{"Scoring Type: " + this.state.scoringType}</Text>
+            <Text>{"Tournament Type: " + this.state.tournamentType}</Text>
+            <Text>{"Max Team Size: " + this.state.maxTeamSize}</Text>
+            <Text>{"Entry Cost: " + this.state.entryCost}</Text>
+            <Text>{"Max Teams: " + this.state.maxTeams}</Text>
+            <Text>{"Start Date: " + this.state.startDate}</Text>
+            <Text>{"End Date: " + this.state.endDate}</Text>
+          </View>
+        )}
+      </Container>
+    );
+  }
+}
+
+export default TournamentDetail;

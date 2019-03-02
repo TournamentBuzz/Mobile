@@ -8,16 +8,16 @@ import TournamentDetail from "../components/TournamentDetail";
 import Account from "../components/Account";
 import Login from "../components/Login";
 
-const HomeRoute = () => <Text>Home</Text>;
+// const HomeRoute = () => <Text>Home</Text>;
 
-const ExploreRoute = () => <TournamentList />;
+// const ExploreRoute = () => <TournamentList />;
 
-const AccountRoute = () => <Account />;
+// const AccountRoute = () => <Account />;
 
 class Main extends Component {
+  static navigationOptions = { header: null };
   constructor(props) {
     super(props);
-
     this.state = {
       index: 0,
       routes: [
@@ -31,9 +31,9 @@ class Main extends Component {
   _handleIndexChange = index => this.setState({ index });
 
   _renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
-    explore: ExploreRoute,
-    account: AccountRoute
+    home: () => <Text>Home</Text>,
+    explore: () => <TournamentList navigation={this.props.navigation} />,
+    account: () => <Account />
   });
 
   render() {

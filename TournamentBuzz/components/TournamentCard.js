@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import { Card, Title, Paragraph } from "react-native-paper";
 
 class TournamentCard extends Component {
-  handlePress(id) {
-    // TODO: go to tournament page
-    console.log(id);
+  handlePress(id, navigation) {
+    navigation.navigate("TournamentDetails", {
+      tournamentId: id
+    });
   }
 
   render() {
-    const { id, name, sponsor, date } = this.props;
+    const { id, name, sponsor, date, navigation } = this.props;
     return (
-      <Card onPress={() => this.handlePress(id)}>
+      <Card onPress={() => this.handlePress(id, navigation)}>
         <Card.Content>
           <Title>{name}</Title>
           <Paragraph>{sponsor + " · " + date}</Paragraph>
