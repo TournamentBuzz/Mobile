@@ -26,7 +26,6 @@ class TournamentDetail extends Component {
 
   async getTournamentDetails() {
     const tournamentId = this.props.navigation.getParam("tournamentId", null);
-    console.log(tournamentId);
     let details = undefined;
     try {
       details = await TournamentAPI.getTournament(tournamentId);
@@ -56,7 +55,6 @@ class TournamentDetail extends Component {
   // }
 
   async componentDidMount() {
-    console.log(this.props.tournamentId);
     await this.getTournamentDetails();
   }
 
