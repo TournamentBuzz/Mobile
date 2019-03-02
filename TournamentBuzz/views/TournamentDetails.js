@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { Title, ActivityIndicator } from "react-native-paper";
+import { Title, ActivityIndicator, Divider } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentAPI from "../API/TournamentAPI.js";
+import MatchList from "../components/MatchList";
 
-class TournamentDetail extends Component {
+class TournamentDetails extends Component {
+  static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
   constructor(props) {
     super(props);
     this.state = {
+      tournamentId: this.props.navigation.getParam("tournamentId", null),
       tournamentName: null,
       creator: null,
       description: null,
@@ -25,10 +28,9 @@ class TournamentDetail extends Component {
   }
 
   async getTournamentDetails() {
-    const tournamentId = this.props.navigation.getParam("tournamentId", null);
     let details = undefined;
     try {
-      details = await TournamentAPI.getTournament(tournamentId);
+      details = await TournamentAPI.getTournament(this.state.tournamentId);
     } catch (error) {
       this.props.navigation.goBack();
     }
@@ -79,9 +81,15 @@ class TournamentDetail extends Component {
             <Text>{"End Date: " + this.state.endDate}</Text>
           </View>
         )}
+        <Divider style={{ height: 4 }} />
+        <Title>Matches</Title>
+        <MatchList
+          tournamentId={this.state.tournamentId}
+          navigation={this.props.navigation}
+        />
       </Container>
     );
   }
 }
 
-export default TournamentDetail;
+export default TournamentDetails;

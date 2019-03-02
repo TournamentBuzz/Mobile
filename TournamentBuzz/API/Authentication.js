@@ -11,7 +11,7 @@ export default class Authentication {
     };
   }
 
-  static async withJWt() {
+  static async withJWT() {
     return {
       Authorization: `Bearer ${await this.getToken()}`,
       ...this.withoutJWT()

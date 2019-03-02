@@ -6,7 +6,7 @@ var APIConfig = require("./config");
 export default class MatchAPI {
   static async getMatches(tournamentID) {
     let authHeader;
-    if (Authentication.loggedIn()) {
+    if (await Authentication.loggedIn()) {
       authHeader = await Authentication.withJWT();
     } else {
       authHeader = Authentication.withoutJWT();

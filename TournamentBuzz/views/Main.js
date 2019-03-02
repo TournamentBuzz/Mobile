@@ -4,7 +4,6 @@ import { Appbar, BottomNavigation } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentList from "../components/TournamentList";
-import TournamentDetail from "../components/TournamentDetail";
 import Account from "../components/Account";
 import Login from "../components/Login";
 
