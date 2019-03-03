@@ -5,6 +5,7 @@ import { Appbar, BottomNavigation } from "react-native-paper";
 import Container from "../components/Container";
 import TournamentList from "../components/TournamentList";
 import Account from "../components/Account";
+import Home from "../components/Home";
 import Login from "../components/Login";
 
 // const HomeRoute = () => <Text>Home</Text>;
@@ -30,7 +31,7 @@ class Main extends Component {
   _handleIndexChange = index => this.setState({ index });
 
   _renderScene = BottomNavigation.SceneMap({
-    home: () => <Text>Home</Text>,
+    home: () => <Home />,
     explore: () => <TournamentList navigation={this.props.navigation} />,
     account: () => <Account />
   });

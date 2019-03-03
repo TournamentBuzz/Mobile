@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { ActivityIndicator, Title } from "react-native-paper";
 
 import Container from "../components/Container";
@@ -53,13 +53,15 @@ class TournamentList extends Component {
   render() {
     return (
       <Container>
-        {this.state.tournamentList === null ? (
-          <View>
-            <ActivityIndicator animating={true} />
-          </View>
-        ) : (
-          <View>{this.state.tournamentList}</View>
-        )}
+        <ScrollView>
+          {this.state.tournamentList === null ? (
+            <View>
+              <ActivityIndicator animating={true} />
+            </View>
+          ) : (
+            <View>{this.state.tournamentList}</View>
+          )}
+        </ScrollView>
       </Container>
     );
   }

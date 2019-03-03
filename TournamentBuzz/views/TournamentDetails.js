@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { Title, ActivityIndicator, Divider } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentAPI from "../API/TournamentAPI.js";
 import MatchList from "../components/MatchList";
+import TeamList from "../components/TeamList";
 
 class TournamentDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -48,14 +49,6 @@ class TournamentDetails extends Component {
     this.setState(details);
   }
 
-  // async createMatchList() {
-  //   // query api and get matches
-  // }
-
-  // async createTeamList() {
-  //   // query api and get matches
-  // }
-
   async componentDidMount() {
     await this.getTournamentDetails();
   }
@@ -63,30 +56,38 @@ class TournamentDetails extends Component {
   render() {
     return (
       <Container>
-        {this.state.tournamentName === null ? (
-          <View>
-            <ActivityIndicator animating={true} />
-          </View>
-        ) : (
-          <View>
-            <Title>{this.state.tournamentName}</Title>
-            <Text>{"Sponsor: " + this.state.creator}</Text>
-            <Text>{"Location: " + this.state.location}</Text>
-            <Text>{"Scoring Type: " + this.state.scoringType}</Text>
-            <Text>{"Tournament Type: " + this.state.tournamentType}</Text>
-            <Text>{"Max Team Size: " + this.state.maxTeamSize}</Text>
-            <Text>{"Entry Cost: " + this.state.entryCost}</Text>
-            <Text>{"Max Teams: " + this.state.maxTeams}</Text>
-            <Text>{"Start Date: " + this.state.startDate}</Text>
-            <Text>{"End Date: " + this.state.endDate}</Text>
-          </View>
-        )}
-        <Divider style={{ height: 4 }} />
-        <Title>Matches</Title>
-        <MatchList
-          tournamentId={this.state.tournamentId}
-          navigation={this.props.navigation}
-        />
+        <ScrollView>
+          {this.state.tournamentName === null ? (
+            <View>
+              <ActivityIndicator animating={true} />
+            </View>
+          ) : (
+            <View>
+              <Title>{this.state.tournamentName}</Title>
+              <Text>{"Sponsor: " + this.state.creator}</Text>
+              <Text>{"Location: " + this.state.location}</Text>
+              <Text>{"Scoring Type: " + this.state.scoringType}</Text>
+              <Text>{"Tournament Type: " + this.state.tournamentType}</Text>
+              <Text>{"Max Team Size: " + this.state.maxTeamSize}</Text>
+              <Text>{"Entry Cost: " + this.state.entryCost}</Text>
+              <Text>{"Max Teams: " + this.state.maxTeams}</Text>
+              <Text>{"Start Date: " + this.state.startDate}</Text>
+              <Text>{"End Date: " + this.state.endDate}</Text>
+            </View>
+          )}
+          <Divider style={{ height: 4 }} />
+          <Title>Matches</Title>
+          <MatchList
+            tournamentId={this.state.tournamentId}
+            navigation={this.props.navigation}
+          />
+          <Divider style={{ height: 4 }} />
+          <Title>Teams</Title>
+          <TeamList
+            tournamentId={this.state.tournamentId}
+            navigation={this.props.navigation}
+          />
+        </ScrollView>
       </Container>
     );
   }
