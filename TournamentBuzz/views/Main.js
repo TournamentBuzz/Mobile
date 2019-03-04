@@ -6,7 +6,6 @@ import Container from "../components/Container";
 import TournamentList from "../components/TournamentList";
 import Account from "../components/Account";
 import Home from "../components/Home";
-import Login from "../components/Login";
 
 // const HomeRoute = () => <Text>Home</Text>;
 
