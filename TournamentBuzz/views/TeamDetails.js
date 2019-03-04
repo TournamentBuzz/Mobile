@@ -39,8 +39,6 @@ class TeamDetails extends Component {
         return;
       }
       details = details[0];
-      details.startDate = new Date(details.startDate).toDateString();
-      details.endDate = new Date(details.endDate).toDateString();
       this.setState(details);
     }
   
@@ -59,10 +57,12 @@ class TeamDetails extends Component {
             ) : (
               <View>
                 <Title>{this.state.teamName}</Title>
-                <Text>{"Sponsor: " + this.state.leader}</Text>
-                <Text>{"Location: " + this.state.paid}</Text>
-                <Text>{"Scoring Type: " + this.state.seed}</Text>
-                <Text>{"Tournament Type: " + this.state.membersList}</Text>
+                <Text>{"Leader: " + this.state.leader}</Text>
+                {this.state.membersList !== null ? (
+                  <Text>{"Members: " + this.state.membersList}</Text>
+                ) : (
+                  <Text>{"-"}</Text>
+                )}
               </View>
             )}
           </ScrollView>

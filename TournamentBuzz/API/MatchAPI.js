@@ -37,7 +37,6 @@ export default class MatchAPI {
       method: "GET",
       headers: authHeader
     });
-
     if (!res.ok) {
       throw new errors.UnexpectedError();
     }

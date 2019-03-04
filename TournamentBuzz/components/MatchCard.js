@@ -3,9 +3,9 @@ import { Card, Title, Paragraph } from "react-native-paper";
 
 class MatchCard extends Component {
   handlePress(id, navigation) {
-    // navigation.navigate("MatchDetails", {
-    //   matchId: id
-    // });
+    navigation.navigate("MatchDetails", {
+       matchId: id
+    });
   }
 
   render() {

@@ -4,6 +4,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Main from "./views/Main";
 import TournamentDetails from "./views/TournamentDetails";
 import TeamDetails from "./views/TeamDetails";
+import MatchDetails from "./views/MatchDetails";
 
 const theme = {
   ...DefaultTheme,
@@ -17,7 +18,8 @@ const AppNavigator = createStackNavigator(
   {
     Home: Main,
     TournamentDetails: TournamentDetails,
-    TeamDetails: TeamDetails
+    TeamDetails: TeamDetails,
+    MatchDetails: MatchDetails
   },
   {
     initialRouteName: "Home"
