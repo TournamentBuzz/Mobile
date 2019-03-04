@@ -37,7 +37,7 @@ class TeamList extends Component {
     for (let team of teams) {
       list.push(
         <TeamCard
-          id={teams.id}
+          id={team.id}
           key={team.id}
           teamName={team.teamName}
           navigation={this.props.navigation}

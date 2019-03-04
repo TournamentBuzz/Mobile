@@ -3,9 +3,9 @@ import { Card, Title } from "react-native-paper";
 
 class TeamCard extends Component {
   handlePress(id, navigation) {
-    // navigation.navigate("TeamDetails", {
-    //   teamId: id
-    // });
+    navigation.navigate("TeamDetails", {
+      teamId: id
+    });
   }
 
   render() {
