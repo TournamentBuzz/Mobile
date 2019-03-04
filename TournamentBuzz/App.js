@@ -3,6 +3,7 @@ import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Main from "./views/Main";
 import TournamentDetails from "./views/TournamentDetails";
+import TeamDetails from "./views/TeamDetails";
 
 const theme = {
   ...DefaultTheme,
@@ -15,7 +16,8 @@ const theme = {
 const AppNavigator = createStackNavigator(
   {
     Home: Main,
-    TournamentDetails: TournamentDetails
+    TournamentDetails: TournamentDetails,
+    TeamDetails: TeamDetails
   },
   {
     initialRouteName: "Home"
