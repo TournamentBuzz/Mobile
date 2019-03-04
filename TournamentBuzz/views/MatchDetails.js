@@ -44,6 +44,7 @@ class MatchDetails extends Component {
         return;
       }
       details = details[0];
+      details.matchTime = new Date(details.matchTime).toDateString();
       this.setState(details);
     }
   
@@ -62,20 +63,17 @@ class MatchDetails extends Component {
             ) : (
               <View>
               {this.state.scoreA === null ? (
-                <View>
-                <Title>{this.state.teamName}</Title>
-                <Text>{"Team A: " + this.state.teamA.teamName}</Text>
-                <Text>{"vs"}</Text>
-                <Text>{"Team B: " + this.state.teamB.teamName}</Text>
+                <View style={{marginLeft: 10}}>
+                <Title>{this.state.matchName}</Title>
+                <Title>{this.state.teamA.teamName  + " vs " + this.state.teamB.teamName}</Title>
                 <Text>{"Time: " + this.state.matchTime}</Text>
                 <Text>{"Location: " + this.state.location}</Text>
               </View>
               ) : (
-                <View>
-                <Title>{this.state.teamName}</Title>
-                <Text>{"Team A: " + this.state.teamA.teamName + ": " + this.state.scoreA}</Text>
-                <Text>{"vs"}</Text>
-                <Text>{"Team B: " + this.state.teamB.teamName + ": " + this.state.scoreB}</Text>
+                <View style={{marginLeft: 10}}>
+                <Title>{this.state.matchName}</Title>
+                <Title>{this.state.teamA.teamName  + " vs " + this.state.teamB.teamName}</Title>
+                <Text>{this.state.scoreA + " : " +  this.state.scoreB}</Text>
                 <Text>{"Time: " + this.state.matchTime}</Text>
                 <Text>{"Location: " + this.state.location}</Text>
               </View>

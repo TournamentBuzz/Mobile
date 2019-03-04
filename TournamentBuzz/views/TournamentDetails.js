@@ -62,7 +62,7 @@ class TournamentDetails extends Component {
               <ActivityIndicator animating={true} />
             </View>
           ) : (
-            <View>
+            <View style={{marginLeft: 10}}>
               <Title>{this.state.tournamentName}</Title>
               <Text>{"Sponsor: " + this.state.creator}</Text>
               <Text>{"Location: " + this.state.location}</Text>
@@ -75,14 +75,14 @@ class TournamentDetails extends Component {
               <Text>{"End Date: " + this.state.endDate}</Text>
             </View>
           )}
-          <Divider style={{ height: 4 }} />
-          <Title>Matches</Title>
+          <Divider style={{ height: 4}} />
+          <Title style={{marginLeft: 10}}>Matches</Title>
           <MatchList
             tournamentId={this.state.tournamentId}
             navigation={this.props.navigation}
           />
-          <Divider style={{ height: 4 }} />
-          <Title>Teams</Title>
+          <Divider style={{ height: 4}} />
+          <Title style={{marginLeft: 10}}>Teams</Title>
           <TeamList
             tournamentId={this.state.tournamentId}
             navigation={this.props.navigation}

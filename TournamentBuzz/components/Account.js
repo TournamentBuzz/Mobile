@@ -62,11 +62,12 @@ class Account extends Component {
     return (
       <Container>
         {this.state.loggedIn === true ? (
-          <View>
+          <View style={{marginLeft: 10}}>
             <Title>{"My Account"}</Title>
             {this.state.notificationsList === null ? (
               <View>
-                <Text>{"Notifications"}</Text>
+                <Text style={{fontWeight: 'bold'}}>{"Notifications"}</Text>
+                <Text>{"No notifications"}</Text>
                 {/* <ActivityIndicator animating={true} /> */}
                 <Button onPress={this.signOut.bind(this)}>Sign Out</Button>
               </View>

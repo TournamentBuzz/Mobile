@@ -55,7 +55,7 @@ class TeamDetails extends Component {
                 <ActivityIndicator animating={true} />
               </View>
             ) : (
-              <View>
+              <View style={{marginLeft: 10}}>
                 <Title>{this.state.teamName}</Title>
                 <Text>{"Leader: " + this.state.leader}</Text>
                 {this.state.membersList !== null ? (
