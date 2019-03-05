@@ -5,6 +5,7 @@ import Main from "./views/Main";
 import TournamentDetails from "./views/TournamentDetails";
 import TeamDetails from "./views/TeamDetails";
 import MatchDetails from "./views/MatchDetails";
+import TeamCreate from "./views/TeamCreate";
 
 const theme = {
   ...DefaultTheme,
@@ -19,7 +20,8 @@ const AppNavigator = createStackNavigator(
     Home: Main,
     TournamentDetails: TournamentDetails,
     TeamDetails: TeamDetails,
-    MatchDetails: MatchDetails
+    MatchDetails: MatchDetails,
+    TeamCreate: TeamCreate
   },
   {
     initialRouteName: "Home"

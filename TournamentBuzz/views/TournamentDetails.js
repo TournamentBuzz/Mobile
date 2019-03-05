@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
-import { Title, ActivityIndicator, Divider } from "react-native-paper";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { Title, ActivityIndicator, Divider, FAB } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentAPI from "../API/TournamentAPI.js";
 import MatchList from "../components/MatchList";
 import TeamList from "../components/TeamList";
+import CreateButton from "../components/CreateButton";
 
 class TournamentDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -88,6 +89,10 @@ class TournamentDetails extends Component {
             navigation={this.props.navigation}
           />
         </ScrollView>
+        <CreateButton
+          tournamentId={this.state.tournamentId}
+          navigation={this.props.navigation}
+        />
       </Container>
     );
   }

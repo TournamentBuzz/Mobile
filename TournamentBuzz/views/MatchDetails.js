@@ -16,8 +16,8 @@ class MatchDetails extends Component {
         location: null,
         matchTime: null,
         matchName: null,
-        teamA: {},
-        teamB: {},
+        teamA: {teamName: "Undetermined"},
+        teamB: {teamName: "Undetermined"},
         published: null,
         isReferee: false,
         scoreButtonText: "Enter Scores",
@@ -45,6 +45,15 @@ class MatchDetails extends Component {
       }
       details = details[0];
       details.matchTime = new Date(details.matchTime).toDateString();
+      if (details.teamA === null) {
+        details.teamA = {teamName: "Undetermined"};
+      }
+      if (details.teamB === null) {
+        details.teamB = {teamName: "Undetermined"};
+      }
+      if (details.location === null) {
+        details.location = "Undetermined";
+      }
       this.setState(details);
     }
   

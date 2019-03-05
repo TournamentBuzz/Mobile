@@ -38,6 +38,9 @@ class TeamDetails extends Component {
         this.props.navigation.goBack();
         return;
       }
+
+      //TODO: make call for team members
+
       details = details[0];
       this.setState(details);
     }
