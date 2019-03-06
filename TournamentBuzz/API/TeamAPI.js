@@ -10,11 +10,10 @@ export default class TeamAPI {
       `${APIConfig.backendURL}/tournaments/id/${tournamentId}/teams/create`,
       {
         method: "POST",
-        headers: Authentication.withJWT(),
+        headers: await Authentication.withJWT(),
         body: JSON.stringify({ teamName })
       }
     );
-
     if (!res.ok) {
       throw new errors.UnexpectedError();
     }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
 import { Title, ActivityIndicator, Divider, FAB } from "react-native-paper";
 
 import Container from "../components/Container";
@@ -54,10 +54,19 @@ class TournamentDetails extends Component {
     await this.getTournamentDetails();
   }
 
+  refresh() {
+    this.setState(this.state);
+  }
+
   render() {
     return (
       <Container>
-        <ScrollView>
+        <ScrollView
+          refreshControl = {<RefreshControl
+            refreshing={false}
+            onRefresh={() => this.refresh()}
+          />}
+        >
           {this.state.tournamentName === null ? (
             <View>
               <ActivityIndicator animating={true} />

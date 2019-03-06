@@ -15,12 +15,12 @@ class CreateButton extends Component {
 
   handleTeamPress(navigation, tournamentId) {
     navigation.navigate("TeamCreate", {
-        tournamentId: tournamentId
+        tournamentId: tournamentId,
      });
   }
 
   render() {
-    const { tournamentId, navigation } = this.props;
+    const { tournamentId, navigation} = this.props;
     return (
       <NavigationAwarePortal>
         <FAB.Group

@@ -18,9 +18,10 @@ class TeamCreate extends Component {
       this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
-    handleFormSubmit() {
-      if (teamName !== null) {
-        TeamAPI.createTeam(this.state.tournamentId, this.state.teamName);
+    async handleFormSubmit() {
+      if (this.state.teamName !== null) {
+        await TeamAPI.createTeam(this.state.tournamentId, this.state.teamName);
+        this.props.navigation.goBack();
       }
     }
 
@@ -34,7 +35,7 @@ class TeamCreate extends Component {
               onChangeText={teamName => this.setState((prevState) => 
                 ({formError:prevState.formError, tournamentId: prevState.tournamentId, teamName: teamName}))}
             />
-            <Button onPress={() => handleFormSubmit()}>Submit</Button>
+            <Button onPress={() => this.handleFormSubmit()}>Submit</Button>
           </ScrollView>
         </Container>
       );
