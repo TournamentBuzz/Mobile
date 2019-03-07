@@ -25,8 +25,36 @@ class TournamentDetails extends Component {
       maxTeams: null,
       startDate: null,
       endDate: null,
-      teamList: null
+      teamList: null,
+      refreshing: false,
+      refreshChildren: false
     };
+    this.onRefresh = this.onRefresh.bind(this);
+  }
+
+  async onRefresh() {
+    this.setState({
+      refreshing: true,
+      refreshChildren: !this.state.refreshChildren
+    });
+    let details = undefined;
+    try {
+      details = await TournamentAPI.getTournament(this.state.tournamentId);
+    } catch (error) {
+      this.props.navigation.goBack();
+    }
+    if (details === undefined) {
+      this.props.navigation.goBack();
+      return;
+    }
+    if (details.length < 1) {
+      this.props.navigation.goBack();
+      return;
+    }
+    details = details[0];
+    details.startDate = new Date(details.startDate).toDateString();
+    details.endDate = new Date(details.endDate).toDateString();
+    this.setState({ refreshing: false, details: details });
   }
 
   async getTournamentDetails() {
@@ -54,25 +82,23 @@ class TournamentDetails extends Component {
     await this.getTournamentDetails();
   }
 
-  refresh() {
-    this.setState(this.state);
-  }
-
   render() {
     return (
       <Container>
         <ScrollView
-          refreshControl = {<RefreshControl
-            refreshing={false}
-            onRefresh={() => this.refresh()}
-          />}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+            />
+          }
         >
           {this.state.tournamentName === null ? (
             <View>
               <ActivityIndicator animating={true} />
             </View>
           ) : (
-            <View style={{marginLeft: 10}}>
+            <View style={{ marginLeft: 10 }}>
               <Title>{this.state.tournamentName}</Title>
               <Text>{"Sponsor: " + this.state.creator}</Text>
               <Text>{"Location: " + this.state.location}</Text>
@@ -85,17 +111,19 @@ class TournamentDetails extends Component {
               <Text>{"End Date: " + this.state.endDate}</Text>
             </View>
           )}
-          <Divider style={{ height: 4}} />
-          <Title style={{marginLeft: 10}}>Matches</Title>
+          <Divider style={{ height: 4 }} />
+          <Title style={{ marginLeft: 10 }}>Matches</Title>
           <MatchList
             tournamentId={this.state.tournamentId}
             navigation={this.props.navigation}
+            refresh={this.state.refreshChildren}
           />
-          <Divider style={{ height: 4}} />
-          <Title style={{marginLeft: 10}}>Teams</Title>
+          <Divider style={{ height: 4 }} />
+          <Title style={{ marginLeft: 10 }}>Teams</Title>
           <TeamList
             tournamentId={this.state.tournamentId}
             navigation={this.props.navigation}
+            refresh={this.state.refreshChildren}
           />
         </ScrollView>
         <CreateButton

@@ -10,8 +10,39 @@ class TeamList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teamList: null
+      teamList: null,
+      refresh: props.refresh
     };
+    this.refreshList = this.refreshList.bind(this);
+  }
+
+  async refreshList() {
+    let teams = undefined;
+    try {
+      teams = await TeamAPI.getTeams(this.props.tournamentId);
+    } catch (error) {
+      return;
+    }
+    if (teams === undefined) {
+      return;
+    }
+    if (teams.length < 1) {
+      let message = <Title>No teams</Title>;
+      this.setState({ teamList: message });
+      return;
+    }
+    let list = [];
+    for (let team of teams) {
+      list.push(
+        <TeamCard
+          id={team.id}
+          key={team.id}
+          teamName={team.teamName}
+          navigation={this.props.navigation}
+        />
+      );
+    }
+    this.setState({ teamList: list });
   }
 
   async createTeamList() {
@@ -45,6 +76,18 @@ class TeamList extends Component {
       );
     }
     this.setState({ teamList: list });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh !== this.state.refresh) {
+      this.refreshList();
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.refresh !== prevState.refresh) {
+      return { refresh: nextProps.refresh };
+    } else return null;
   }
 
   async componentDidMount() {

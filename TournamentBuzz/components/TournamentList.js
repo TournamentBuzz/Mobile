@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, RefreshControl } from "react-native";
 import { ActivityIndicator, Title } from "react-native-paper";
 
 import Container from "../components/Container";
@@ -10,8 +10,41 @@ class TournamentList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tournamentList: null
+      tournamentList: null,
+      refreshing: false
     };
+    this.onRefresh = this.onRefresh.bind(this);
+  }
+
+  async onRefresh() {
+    this.setState({ refreshing: true });
+    let tournaments = undefined;
+    try {
+      tournaments = await TournamentAPI.getTournaments();
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+    if (tournaments.length < 1) {
+      let message = <Title>No upcoming tournaments</Title>;
+      this.setState({ tournamentList: message });
+      return;
+    }
+    let list = [];
+    for (let tournament of tournaments) {
+      let card = (
+        <TournamentCard
+          key={tournament.id}
+          id={tournament.id}
+          name={tournament.tournamentName}
+          sponsor={tournament.creator}
+          date={new Date(Date.parse(tournament.startDate)).toDateString()}
+          navigation={this.props.navigation}
+        />
+      );
+      list.push(card);
+    }
+    this.setState({ tournamentList: list, refreshing: false });
   }
 
   async createTournamentList() {
@@ -53,7 +86,14 @@ class TournamentList extends Component {
   render() {
     return (
       <Container>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+            />
+          }
+        >
           {this.state.tournamentList === null ? (
             <View>
               <ActivityIndicator animating={true} />
