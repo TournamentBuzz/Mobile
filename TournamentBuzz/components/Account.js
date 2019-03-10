@@ -3,8 +3,7 @@ import { View, AsyncStorage, StyleSheet } from "react-native";
 import { ActivityIndicator, Button, Title, Text } from "react-native-paper";
 
 import Container from "../components/Container";
-import GoogleAuth from "../API/GoogleAuth";
-import Login from "./Login";
+import Authentication from "../API/Authentication";
 
 const loginStyles = StyleSheet.create({
   view: {
@@ -18,7 +17,7 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
+      loggedIn: null,
       notificationsList: null
     };
     this.googleLogin = this.googleLogin.bind(this);
@@ -29,44 +28,42 @@ class Account extends Component {
   // }
 
   async googleLogin() {
+    this.setState({ loggedIn: null });
     try {
-      const result = await GoogleAuth.signInAsync();
+      await Authentication.login();
       this.setState({ loggedIn: true });
     } catch (e) {
       console.log("User cancelled signin");
+      this.setState({ loggedIn: false });
     }
   }
 
   async signOut() {
-    const accountKey = JSON.parse(
-      await AsyncStorage.getItem("@Tournamentbuzz:GoogleOAuthKey")
-    );
-    await GoogleAuth.signOutAsync(accountKey);
+    await Authentication.logout();
     this.setState({ loggedIn: false });
   }
 
   async componentDidMount() {
-    try {
-      const accountKey = await AsyncStorage.getItem(
-        "@Tournamentbuzz:GoogleOAuthKey"
-      );
-      if (accountKey !== undefined && accountKey !== null) {
-        this.setState({ loggedIn: true });
-      }
-    } catch (e) {
-      console.log("Not logged in");
+    if (await Authentication.loggedIn()) {
+      this.setState({ loggedIn: true });
+    } else {
+      this.setState({ loggedIn: false });
     }
   }
 
   render() {
     return (
       <Container>
-        {this.state.loggedIn === true ? (
-          <View style={{marginLeft: 10}}>
+        {this.state.loggedIn === null ? (
+          <View style={loginStyles.view}>
+            <ActivityIndicator animating={true} />
+          </View>
+        ) : this.state.loggedIn === true ? (
+          <View style={{ marginLeft: 10 }}>
             <Title>{"My Account"}</Title>
             {this.state.notificationsList === null ? (
               <View>
-                <Text style={{fontWeight: 'bold'}}>{"Notifications"}</Text>
+                <Text style={{ fontWeight: "bold" }}>{"Notifications"}</Text>
                 <Text>{"No notifications"}</Text>
                 {/* <ActivityIndicator animating={true} /> */}
                 <Button onPress={this.signOut.bind(this)}>Sign Out</Button>

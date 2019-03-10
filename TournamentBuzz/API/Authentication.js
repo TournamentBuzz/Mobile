@@ -2,8 +2,35 @@ import { AsyncStorage } from "react-native";
 import * as decode from "jwt-decode";
 
 import * as errors from "./errors";
+import GoogleAuth from "./GoogleAuth";
+
+var APIConfig = require("./config");
 
 export default class Authentication {
+  static async login() {
+    const result = await GoogleAuth.signInAsync();
+    const gToken = result.idToken;
+    const res = await fetch(`${APIConfig.backendURL}/user/google-auth`, {
+      method: "POST",
+      headers: await Authentication.withoutJWT(),
+      body: JSON.stringify({ gToken })
+    });
+    if (!res.ok) {
+      throw new errors.UnexpectedError();
+    }
+    const json = await res.json();
+    await this.setToken(json.jwt);
+    return;
+  }
+
+  static async logout() {
+    const accountKey = JSON.parse(
+      await AsyncStorage.getItem("@Tournamentbuzz:GoogleOAuthKey")
+    );
+    await GoogleAuth.signOutAsync(accountKey);
+    await AsyncStorage.removeItem("userToken");
+  }
+
   static withoutJWT() {
     return {
       Accept: "application/json",
