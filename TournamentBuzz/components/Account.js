@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, AsyncStorage, StyleSheet } from "react-native";
 import { ActivityIndicator, Button, Title, Text } from "react-native-paper";
+import { CSComponent } from "react-central-state";
 
 import Container from "../components/Container";
 import Authentication from "../API/Authentication";
@@ -17,10 +18,13 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: null,
       notificationsList: null
     };
     this.googleLogin = this.googleLogin.bind(this);
+  }
+
+  updateWith() {
+    return ["loggedIn"];
   }
 
   // async createNotificationsList() {
@@ -28,37 +32,39 @@ class Account extends Component {
   // }
 
   async googleLogin() {
-    this.setState({ loggedIn: null });
+    this.setCentralState({ loggedIn: null });
     try {
       await Authentication.login();
-      this.setState({ loggedIn: true });
+      this.setCentralState({ loggedIn: true });
     } catch (e) {
       console.log("User cancelled signin");
-      this.setState({ loggedIn: false });
+      this.setCentralState({ loggedIn: false });
     }
   }
 
   async signOut() {
     await Authentication.logout();
-    this.setState({ loggedIn: false });
+    this.setCentralState({ loggedIn: false });
   }
 
   async componentDidMount() {
-    if (await Authentication.loggedIn()) {
-      this.setState({ loggedIn: true });
-    } else {
-      this.setState({ loggedIn: false });
+    if (this.centralState.loggedIn === undefined) {
+      if (await Authentication.loggedIn()) {
+        this.setCentralState({ loggedIn: true });
+      } else {
+        this.setCentralState({ loggedIn: false });
+      }
     }
   }
 
   render() {
     return (
       <Container>
-        {this.state.loggedIn === null ? (
+        {this.centralState.loggedIn === null ? (
           <View style={loginStyles.view}>
             <ActivityIndicator animating={true} />
           </View>
-        ) : this.state.loggedIn === true ? (
+        ) : this.centralState.loggedIn === true ? (
           <View style={{ marginLeft: 10 }}>
             <Title>{"My Account"}</Title>
             {this.state.notificationsList === null ? (
@@ -88,4 +94,4 @@ class Account extends Component {
   }
 }
 
-export default Account;
+export default CSComponent(Account);
