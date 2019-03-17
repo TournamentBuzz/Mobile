@@ -129,7 +129,7 @@ export default class TeamAPI {
     if (!(await Authentication.loggedIn())) return;
     const res = await fetch(`${APIConfig.backendURL}/invites`, {
       method: "GET",
-      headers: Authentication.withJWT()
+      headers: await Authentication.withJWT()
     });
     if (!res.ok) {
       throw new errors.UnexpectedError();
@@ -142,7 +142,7 @@ export default class TeamAPI {
     if (!(await Authentication.loggedIn())) return;
     const res = await fetch(`${APIConfig.backendURL}/invites/accept`, {
       method: "POST",
-      headers: Authentication.withJWT(),
+      headers: await Authentication.withJWT(),
       body: JSON.stringify({ teamId })
     });
     if (!res.ok) {
@@ -156,7 +156,7 @@ export default class TeamAPI {
     if (!(await Authentication.loggedIn())) return;
     const res = await fetch(`${APIConfig.backendURL}/invites/decline`, {
       method: "POST",
-      headers: Authentication.withJWT(),
+      headers: await Authentication.withJWT(),
       body: JSON.stringify({ teamId })
     });
     if (!res.ok) {

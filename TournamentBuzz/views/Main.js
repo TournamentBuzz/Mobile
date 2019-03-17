@@ -1,17 +1,20 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
-import { Appbar, BottomNavigation } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import { Appbar, BottomNavigation, Badge } from "react-native-paper";
+import { CSComponent } from "react-central-state";
 
 import Container from "../components/Container";
 import TournamentList from "../components/TournamentList";
 import Account from "../components/Account";
 import Home from "../components/Home";
 
-// const HomeRoute = () => <Text>Home</Text>;
-
-// const ExploreRoute = () => <TournamentList />;
-
-// const AccountRoute = () => <Account />;
+const styles = StyleSheet.create({
+  badge: {
+    position: "absolute",
+    bottom: 30,
+    right: 5
+  }
+});
 
 class Main extends Component {
   static navigationOptions = { header: null };
@@ -25,6 +28,11 @@ class Main extends Component {
         { key: "account", title: "Account", icon: "person" }
       ]
     };
+    this._onNotifications = this._onNotifications.bind(this);
+  }
+
+  updateWith() {
+    return ["loggedIn"];
   }
 
   _handleIndexChange = index => this.setState({ index });
@@ -35,12 +43,22 @@ class Main extends Component {
     account: () => <Account />
   });
 
+  _onNotifications() {
+    this.props.navigation.navigate("Notifications");
+  }
+
   render() {
     return (
       <Container>
         <View>
           <Appbar.Header>
             <Appbar.Content title="TournamentBuzz" />
+            {this.centralState.loggedIn ? (
+              <Appbar.Action
+                icon="notifications"
+                onPress={this._onNotifications}
+              /> /* <Badge style={styles.badge}>2</Badge> */
+            ) : null}
           </Appbar.Header>
         </View>
         <BottomNavigation
@@ -53,4 +71,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default CSComponent(Main);
