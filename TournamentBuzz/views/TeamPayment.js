@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import {
   Title,
   ActivityIndicator,
   Divider,
   TextInput,
-  Button
+  Button,
+  Portal,
+  Modal
 } from "react-native-paper";
 import { CreditCardInput } from "react-native-credit-card-input";
 
@@ -13,6 +15,14 @@ import Container from "../components/Container";
 import TeamAPI from "../API/TeamAPI";
 
 var stripe = require("stripe-client")("pk_test_X20OBRj4crG53yFIaOaoKOMw");
+
+const paymentStyles = StyleSheet.create({
+  view: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+});
 
 class TeamPayment extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -27,7 +37,8 @@ class TeamPayment extends Component {
       cardNumber: "",
       cvc: "",
       exp_month: "",
-      exp_year: ""
+      exp_year: "",
+      processing: false
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this._onChange = this._onChange.bind(this);
@@ -36,6 +47,7 @@ class TeamPayment extends Component {
   async handleFormSubmit() {
     if (this.state.teamId !== null && this.state.entryCost !== null) {
       if (this.state.validInput) {
+        this.setState({ processing: true });
         const information = {
           card: {
             number: this.state.cardNumber,
@@ -83,6 +95,13 @@ class TeamPayment extends Component {
   render() {
     return (
       <Container>
+        <Portal>
+          <View style={paymentStyles.view}>
+            <Modal visible={this.state.processing} dismissable={false}>
+              <ActivityIndicator animating={true} />
+            </Modal>
+          </View>
+        </Portal>
         <CreditCardInput onChange={this._onChange} requiresName={true} />
         <Button onPress={this.handleFormSubmit}>Submit</Button>
       </Container>

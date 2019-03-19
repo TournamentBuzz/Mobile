@@ -4,6 +4,7 @@ import { Title, ActivityIndicator, Banner } from "react-native-paper";
 
 import Container from "../components/Container";
 import TeamAPI from "../API/TeamAPI.js";
+import Authentication from "../API/Authentication";
 
 class TeamDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -11,6 +12,7 @@ class TeamDetails extends Component {
     super(props);
     this.state = {
       teamId: this.props.navigation.getParam("teamId", null),
+      currentUser: null,
       teamName: null,
       leader: null,
       tournamentID: null,
@@ -53,6 +55,8 @@ class TeamDetails extends Component {
   }
 
   async componentDidMount() {
+    const currentUser = await Authentication.getUID();
+    this.setState({ currentUser: currentUser });
     await this.getTeamDetails();
   }
 
@@ -67,7 +71,11 @@ class TeamDetails extends Component {
           ) : (
             <View style={{ marginLeft: 10 }}>
               <Banner
-                visible={!this.state.paid}
+                visible={
+                  !this.state.paid &&
+                  this.state.currentUser !== null &&
+                  this.state.currentUser === this.state.leader
+                }
                 actions={[
                   {
                     label: "Pay Now",

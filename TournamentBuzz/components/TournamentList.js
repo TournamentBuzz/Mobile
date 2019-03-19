@@ -23,11 +23,12 @@ class TournamentList extends Component {
       tournaments = await TournamentAPI.getTournaments();
     } catch (error) {
       console.log(error);
+      this.setState({ refreshing: false });
       return;
     }
     if (tournaments.length < 1) {
       let message = <Title>No upcoming tournaments</Title>;
-      this.setState({ tournamentList: message });
+      this.setState({ tournamentList: message, refreshing: false });
       return;
     }
     let list = [];
