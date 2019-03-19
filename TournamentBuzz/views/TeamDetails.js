@@ -69,7 +69,7 @@ class TeamDetails extends Component {
               <ActivityIndicator animating={true} />
             </View>
           ) : (
-            <View style={{ marginLeft: 10 }}>
+            <View style={{ marginLeft: 10, marginRight: 10 }}>
               <Banner
                 visible={
                   !this.state.paid &&
@@ -83,7 +83,8 @@ class TeamDetails extends Component {
                   }
                 ]}
               >
-                The team entry fee has not been paid yet
+                The team entry fee of ${this.state.entryCost} has not been paid
+                yet
               </Banner>
               <Title>{this.state.teamName}</Title>
               <Text>{"Leader: " + this.state.leader}</Text>

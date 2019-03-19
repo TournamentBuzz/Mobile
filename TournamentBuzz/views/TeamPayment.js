@@ -65,11 +65,14 @@ class TeamPayment extends Component {
           return;
         } catch (error) {
           // charge unsuccessful
-          console.log("Charge failed");
+          this.setState({
+            formError:
+              "An error occured processing your payment. Please check your card information and try again"
+          });
         }
       } else {
-        console.log("Incomplete information");
-        // show incomplete error
+        // Incomplete Information
+        this.setState({ formError: "Please fill out all the fields" });
       }
     }
   }
@@ -88,7 +91,8 @@ class TeamPayment extends Component {
       cardNumber: cardNumber,
       cvc: form.values.cvc,
       exp_month: exp_month,
-      exp_year: exp_year
+      exp_year: exp_year,
+      formError: ""
     });
   }
 
@@ -102,8 +106,17 @@ class TeamPayment extends Component {
             </Modal>
           </View>
         </Portal>
+        <View style={{ marginBottom: 15, marginLeft: 10 }}>
+          <Title>Tournament Entry Fee Payment</Title>
+          <Text>Cost: ${this.state.entryCost}</Text>
+        </View>
+        <Text style={{ marginBottom: 10, marginLeft: 10, color: "#FF0000" }}>
+          {this.state.formError}
+        </Text>
         <CreditCardInput onChange={this._onChange} requiresName={true} />
-        <Button onPress={this.handleFormSubmit}>Submit</Button>
+        <Button onPress={this.handleFormSubmit} style={{ marginTop: 20 }}>
+          Submit
+        </Button>
       </Container>
     );
   }
