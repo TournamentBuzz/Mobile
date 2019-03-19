@@ -1,10 +1,10 @@
 import { AsyncStorage } from "react-native";
-import * as decode from "jwt-decode";
 
 import * as errors from "./errors";
 import GoogleAuth from "./GoogleAuth";
 
 var APIConfig = require("./config");
+var jwtDecode = require("jwt-decode");
 
 export default class Authentication {
   static async login() {
@@ -12,7 +12,7 @@ export default class Authentication {
     const gToken = result.idToken;
     const res = await fetch(`${APIConfig.backendURL}/user/google-auth`, {
       method: "POST",
-      headers: await Authentication.withoutJWT(),
+      headers: await this.withoutJWT(),
       body: JSON.stringify({ gToken })
     });
     if (!res.ok) {
@@ -31,6 +31,20 @@ export default class Authentication {
     await AsyncStorage.removeItem("userToken");
   }
 
+  static async refreshJWT(gToken) {
+    const res = await fetch(`${APIConfig.backendURL}/user/google-auth`, {
+      method: "POST",
+      headers: await this.withoutJWT(),
+      body: JSON.stringify({ gToken })
+    });
+    if (!res.ok) {
+      throw new errors.UnexpectedError();
+    }
+    const json = await res.json();
+    await this.setToken(json.jwt);
+    return;
+  }
+
   static withoutJWT() {
     return {
       Accept: "application/json",
@@ -39,6 +53,9 @@ export default class Authentication {
   }
 
   static async withJWT() {
+    if (!(await this.loggedIn())) {
+      return this.withoutJWT();
+    }
     return {
       Authorization: `Bearer ${await this.getToken()}`,
       ...this.withoutJWT()
@@ -59,25 +76,40 @@ export default class Authentication {
 
   static isTokenExpired(userToken) {
     try {
-      const decoded = decode(userToken);
+      const decoded = jwtDecode(userToken);
       return decoded.exp < Date.now() / 1000;
     } catch (err) {
-      return false;
+      return true;
     }
   }
 
   static async loggedIn() {
     const token = await this.getToken();
-    return Boolean(token) && !this.isTokenExpired(token);
+    if (Boolean(token)) {
+      if (this.isTokenExpired(token)) {
+        const result = await GoogleAuth.getCachedAuthAsync();
+        if (result === null) {
+          return false;
+        }
+        try {
+          await this.refreshJWT(result.idToken);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   static async getUID() {
-    if (!this.loggedIn()) {
+    if (!(await this.loggedIn())) {
       return null;
     }
     const token = await this.getToken();
     try {
-      const decoded = decode(token);
+      const decoded = jwtDecode(token);
       return decoded.id;
     } catch (err) {
       return null;
