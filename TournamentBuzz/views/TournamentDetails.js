@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView, RefreshControl } from "react-native";
-import { Title, ActivityIndicator, Divider, FAB } from "react-native-paper";
+import { Title, ActivityIndicator, Divider, Button } from "react-native-paper";
 
 import Container from "../components/Container";
 import TournamentAPI from "../API/TournamentAPI.js";
 import MatchList from "../components/MatchList";
 import TeamList from "../components/TeamList";
 import CreateButton from "../components/CreateButton";
+import ViewBracket from "../views/ViewBracket"
 
 class TournamentDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -75,6 +76,7 @@ class TournamentDetails extends Component {
     details = details[0];
     details.startDate = new Date(details.startDate).toDateString();
     details.endDate = new Date(details.endDate).toDateString();
+    
     this.setState(details);
   }
 
@@ -113,11 +115,16 @@ class TournamentDetails extends Component {
           )}
           <Divider style={{ height: 4 }} />
           <Title style={{ marginLeft: 10 }}>Matches</Title>
-          <MatchList
+          <ViewBracket
             tournamentId={this.state.tournamentId}
-            navigation={this.props.navigation}
-            refresh={this.state.refreshChildren}
           />
+          <Button onPress={() => this.props.navigation.navigate("MatchList", {
+            tournamentId: this.state.tournamentId,
+            navigation: this.props.navigation,
+            refresh: this.state.refreshChildren
+          })}>
+            View Full Match List
+          </Button>
           <Divider style={{ height: 4 }} />
           <Title style={{ marginLeft: 10 }}>Teams</Title>
           <TeamList

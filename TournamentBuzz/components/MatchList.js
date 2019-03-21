@@ -11,7 +11,7 @@ class MatchList extends Component {
     super(props);
     this.state = {
       matchList: null,
-      refresh: props.refresh
+      refresh: this.props.navigation.getParam("refresh", null)
     };
     this.refreshList = this.refreshList.bind(this);
   }
@@ -19,7 +19,7 @@ class MatchList extends Component {
   async refreshList() {
     let matches = undefined;
     try {
-      matches = await MatchAPI.getMatches(this.props.tournamentId);
+      matches = await MatchAPI.getMatches(this.props.navigation.getParam("tournamentId", null));
     } catch (error) {
       return;
     }
@@ -47,7 +47,7 @@ class MatchList extends Component {
   async createMatchList() {
     let matches = undefined;
     try {
-      matches = await MatchAPI.getMatches(this.props.tournamentId);
+      matches = await MatchAPI.getMatches(this.props.navigation.getParam("tournamentId", null));
     } catch (error) {
       let message = <Title>Error loading matches</Title>;
       this.setState({ matchList: message });
