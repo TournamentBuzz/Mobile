@@ -62,6 +62,46 @@ function getRootMatch(matchesList) {
   return undefined;
 }
 
+function getDepth(matchesList, rootMatch) {
+  if (rootMatch === null || (rootMatch.feederA === null && rootMatch.feederB === null)) {
+    return 1;
+  } else if (rootMatch.feederA === null) {
+    for (i = 0; i < matchesList.length; i++) {
+      if (matchesList[i].id === rootMatch.feederB) {
+        return 1 + getDepth(matchesList, matchesList[i]);
+      }
+    }
+    return 1;
+  } else if (rootMatch.feederB === null) {
+    for (i = 0; i < matchesList.length; i++) {
+      if (matchesList[i].id === rootMatch.feederA) {
+        return 1 + getDepth(matchesList, matchesList[i]);
+      }
+    }
+    return 1;
+  } else {
+    let feederA = null;
+    let feederB = null;
+    for (i = 0; i < matchesList.length; i++) {
+      if (matchesList[i].id === rootMatch.feederB) {
+        feederB == matchesList[i];
+      }
+    }
+    for (i = 0; i < matchesList.length; i++) {
+      if (matchesList[i].id === rootMatch.feederA) {
+        feederA == matchesList[i];
+      }
+    }
+    const b = getDepth(matchesList, feederA);
+    const a = getDepth(matchesList, feederB);
+    if (b > a) {
+      return b + 1;
+    } else {
+      return a + 1;
+    }
+  }
+}
+
 function mapIdToMatch(matchesList) {
   const mapping = new Map();
   for (const match of matchesList) {
@@ -91,8 +131,14 @@ class TournamentBracket extends React.Component {
     const matchesList = this.props.matchesList;
     //console.log(matchesList);
     if (matchesList.length > 0 && !isRoundRobin(matchesList)) {
-      const matchesObject = makeMatchesObject(matchesList);
-      return (<Text> this isn't ready yet </Text>);/*<Bracket game={matchesObject} />;*/
+      //const matchesObject = makeMatchesObject(matchesList);
+      const rootMatch = getRootMatch(matchesList);
+      const depth = getDepth(matchesList, rootMatch);
+      
+      // horizontal scrollview component, each with its own vertical scrollview that lists the matches? https://facebook.github.io/react-native/docs/scrollview
+
+      return (<Text> This isn't ready yet :) </Text>);
+      /* return <Bracket game={matchesObject} />;*/
     }
     if (matchesList.length > 0 && isRoundRobin(matchesList)) {
       const teamResults = {};

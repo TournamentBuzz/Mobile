@@ -50,13 +50,16 @@ class ViewBracket extends React.Component {
       this.setState({ matches: message });
       return;
     }
-
     teamSet = new Set();
-    for (const m of match) {
-      const teamA = m.teamA.teamId;
-      const teamB = m.teamB.teamId;
-      teamSet.add(teamA);
-      teamSet.add(teamB);
+    try {
+      for (const m of match) {
+        const teamA = m.teamA.teamId;
+        const teamB = m.teamB.teamId;
+        teamSet.add(teamA);
+        teamSet.add(teamB);
+      }
+    } catch (error) {
+      // not round robin
     }
     const teams = Array.from(teamSet);
     promote = await isPartOfTeam(teams);

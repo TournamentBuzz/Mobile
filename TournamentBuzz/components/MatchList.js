@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { ActivityIndicator, Title } from "react-native-paper";
 
 import Container from "../components/Container";
@@ -100,7 +100,9 @@ class MatchList extends Component {
             <ActivityIndicator animating={true} />
           </View>
         ) : (
-          <View>{this.state.matchList}</View>
+          <ScrollView>
+            <View>{this.state.matchList}</View>
+          </ScrollView>
         )}
       </Container>
     );
