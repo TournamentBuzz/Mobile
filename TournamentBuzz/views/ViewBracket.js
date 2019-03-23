@@ -70,8 +70,9 @@ class ViewBracket extends React.Component {
     return (
       <View>
           <TournamentBracket 
-          matchesList={this.state.matches} 
-          promoted={this.state.promoted}
+            matchesList={this.state.matches} 
+            promoted={this.state.promoted}
+            navigation={this.props.navigation}
           />
       </View>
     );

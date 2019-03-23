@@ -100,23 +100,21 @@ class TournamentDetails extends Component {
               <ActivityIndicator animating={true} />
             </View>
           ) : (
-            <View style={{ marginLeft: 10 }}>
+            <View style={{ marginLeft: 10, marginBottom: 10 }}>
               <Title>{this.state.tournamentName}</Title>
-              <Text>{"Sponsor: " + this.state.creator}</Text>
-              <Text>{"Location: " + this.state.location}</Text>
-              <Text>{"Scoring Type: " + this.state.scoringType}</Text>
-              <Text>{"Tournament Type: " + this.state.tournamentType}</Text>
-              <Text>{"Max Team Size: " + this.state.maxTeamSize}</Text>
-              <Text>{"Entry Cost: " + this.state.entryCost}</Text>
-              <Text>{"Max Teams: " + this.state.maxTeams}</Text>
-              <Text>{"Start Date: " + this.state.startDate}</Text>
-              <Text>{"End Date: " + this.state.endDate}</Text>
+              <Text style={{fontSize: 16}}>{"Sponsor: " + this.state.creator}</Text>
+              <Text style={{fontSize: 16}}>{"Location: " + this.state.location}</Text>
+              <Text style={{fontSize: 16}}>{"Tournament Details: " + this.state.tournamentType + ", " + this.state.scoringType}</Text>
+              <Text style={{fontSize: 16}}>{"Entry Cost: $" + this.state.entryCost}</Text>
+              <Text style={{fontSize: 16}}>{"Max Teams: " + this.state.maxTeams + " teams of at most " + this.state.maxTeamSize + " people"}</Text>
+              <Text style={{fontSize: 16}}>{"Duration: " + this.state.startDate + " - " + this.state.endDate}</Text>
             </View>
           )}
           <Divider style={{ height: 4 }} />
           <Title style={{ marginLeft: 10 }}>Matches</Title>
           <ViewBracket
             tournamentId={this.state.tournamentId}
+            navigation={this.props.navigation}
           />
           <Button onPress={() => this.props.navigation.navigate("MatchList", {
             tournamentId: this.state.tournamentId,

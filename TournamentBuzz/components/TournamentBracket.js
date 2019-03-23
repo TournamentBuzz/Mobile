@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { DataTable } from "react-native-paper"
+import { View, Text, ScrollView } from "react-native";
+import { DataTable } from "react-native-paper";
+import BracketCard from "./BracketCard";
 
 function makeMatchesObject(matchesList) {
   const rootMatch = getRootMatch(matchesList);
@@ -102,6 +103,44 @@ function getDepth(matchesList, rootMatch) {
   }
 }
 
+function getStructure(matchesList, rootMatch, matchStructure, depth) {
+  let q = [[rootMatch, depth]];
+  while (q.length > 0) {
+    let cur = q[0];
+    q.splice(0, 1);
+    if (cur[0] === null || (cur[0].feederA === null && cur[0].feederB === null)) {
+      matchStructure[(cur[1] - 1)].push(cur[0]);
+    } else if (cur[0].feederA === null) {
+      matchStructure[(cur[1] - 1)].push(cur[0]);
+      for (i = 0; i < matchesList.length; i++) {
+        if (matchesList[i].id === cur[0].feederB) {
+          q.push([matchesList[i], (cur[1] - 1)]);
+        }
+      }
+    } else if (cur[0].feederB === null) {
+      matchStructure[(cur[1] - 1)].push(cur[0]);
+      for (i = 0; i < matchesList.length; i++) {
+        if (matchesList[i].id === cur[0].feederA) {
+          q.push([matchesList[i], (cur[1] - 1)]);
+        }
+      }
+    } else {
+      matchStructure[(cur[1] - 1)].push(cur[0]);
+      for (i = 0; i < matchesList.length; i++) {
+        if (matchesList[i].id === cur[0].feederA) {
+          q.push([matchesList[i], (cur[1] - 1)]);
+        }
+      }
+      for (i = 0; i < matchesList.length; i++) {
+        if (matchesList[i].id === cur[0].feederB) {
+          q.push([matchesList[i], (cur[1] - 1)]);
+        }
+      }
+    }
+  }
+  return matchStructure;
+}
+
 function mapIdToMatch(matchesList) {
   const mapping = new Map();
   for (const match of matchesList) {
@@ -129,14 +168,31 @@ class TournamentBracket extends React.Component {
 
   renderBracket() {
     const matchesList = this.props.matchesList;
-    //console.log(matchesList);
     if (matchesList.length > 0 && !isRoundRobin(matchesList)) {
-      //const matchesObject = makeMatchesObject(matchesList);
       const rootMatch = getRootMatch(matchesList);
       const depth = getDepth(matchesList, rootMatch);
-      
-      // horizontal scrollview component, each with its own vertical scrollview that lists the matches? https://facebook.github.io/react-native/docs/scrollview
+      let matchStruct = [];
+      for (i = 0; i < depth; i++) {
+        matchStruct[i] = [];
+      }
+      matchStruct = getStructure(matchesList, rootMatch, matchStruct, depth);
 
+      return (// foreach in matchStruct, list the items in that array level - need to fix size of card
+        <ScrollView horizontal={true}>
+            {matchStruct.map(matchList => (
+              <View key={matchList[0].id} >
+                {matchList.map(matchItem => (
+                  //<Text key={matchItem.id}> {matchItem.id}</Text>
+                  <BracketCard key={matchItem.id} 
+                    tournamentMatch={matchItem}
+                    key={matchItem.id}
+                    navigation={this.props.navigation}
+                  />
+                ))}
+              </View>
+            ))}
+        </ScrollView>
+      );
       return (<Text> This isn't ready yet :) </Text>);
       /* return <Bracket game={matchesObject} />;*/
     }

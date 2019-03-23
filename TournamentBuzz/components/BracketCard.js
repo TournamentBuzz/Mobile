@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Title, Paragraph } from "react-native-paper";
+import { Card, Divider, Title } from "react-native-paper";
 
 class BracketCard extends Component {
   handlePress(id, navigation) {
@@ -9,23 +9,30 @@ class BracketCard extends Component {
   }
 
   render() {
-    // update to better reflect scores and sides
+    // update to better reflect scores and sides - top/bottom half of card should be team and score
     const { tournamentMatch, navigation } = this.props;
-    const timeString = tournamentMatch.matchTime
-      ? new Date(tournamentMatch.matchTime).toLocaleDateString() +
-        " @ " +
-        new Date(tournamentMatch.matchTime).toLocaleTimeString()
-      : "";
-    const matchName =
-      `Match ${tournamentMatch.id}: ` +
-      (tournamentMatch.matchName ||
-        `${tournamentMatch.teamA.teamName || "~Bye~"} vs. ${tournamentMatch
-          .teamB.teamName || "~Bye~"}`);
+    let aTeam;
+    let bTeam;
+    if (tournamentMatch.teamA !== null && tournamentMatch.teamA.teamName !== undefined) {
+      aTeam = tournamentMatch.teamA.teamName + ": " + (tournamentMatch.scoreA || "-");
+    } else if (tournamentMatch.feederA !== null) {
+      aTeam = "TBD";
+    } else {
+      aTeam = "Bye";
+    }
+    if (tournamentMatch.teamB !== null && tournamentMatch.teamB.teamName !== undefined) {
+      bTeam = tournamentMatch.teamB.teamName + ": " + (tournamentMatch.scoreB || "-");
+    } else if (tournamentMatch.feederB !== null) {
+      bTeam = "TBD";
+    } else {
+      bTeam = "Bye";
+    }
     return (
       <Card onPress={() => this.handlePress(tournamentMatch.id, navigation)}>
         <Card.Content>
-          <Title>{matchName}</Title>
-          <Paragraph>{timeString}</Paragraph>
+          <Title>{aTeam}</Title>
+          <Divider style={{ height: 1 }} />
+          <Title>{bTeam}</Title>
         </Card.Content>
       </Card>
     );
