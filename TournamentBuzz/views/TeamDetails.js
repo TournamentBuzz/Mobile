@@ -40,11 +40,29 @@ class TeamDetails extends Component {
       this.props.navigation.goBack();
       return;
     }
-
-    //TODO: make call for team members
-
     details = details[0];
     this.setState(details);
+
+    let members = undefined;
+    try {
+      members = await TeamAPI.getTeamMembers(this.state.teamId);
+    } catch (error) {
+      return;
+    }
+    if (members === undefined) {
+      return;
+    }
+    if (members.length < 1) {
+      return;
+    }
+    let memberStr = "";
+    for (member of members) {
+      if (member.userEmail !== this.state.leader) {
+        memberStr += member.userEmail + ", "
+      }
+    }
+    memberStr = memberStr.slice(0, -2);
+    this.setState({membersList: memberStr})
   }
 
   handleClickAddMember() {

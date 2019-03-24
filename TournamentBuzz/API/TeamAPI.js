@@ -114,7 +114,7 @@ export default class TeamAPI {
       `${APIConfig.backendURL}/teams/id/${teamId}/members`,
       {
         method: "GET",
-        headers: Authentication.withJWT()
+        headers: Authentication.withoutJWT()
       }
     );
 
