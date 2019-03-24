@@ -43,7 +43,12 @@ export default class GoogleAuth {
   }
 
   static async refreshAuthAsync({ refreshToken }) {
-    const authState = await AppAuth.refreshAsync(config, refreshToken);
+    let authState
+    try {
+      authState = await AppAuth.refreshAsync(config, refreshToken);
+    } catch (err) {
+      return null;
+    }
     await this.cacheAuthAsync(authState);
     return authState;
   }
