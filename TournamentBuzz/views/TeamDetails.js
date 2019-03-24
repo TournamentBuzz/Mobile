@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView } from "react-native";
-import { Title, ActivityIndicator, Banner } from "react-native-paper";
+import { Title, ActivityIndicator, Banner, Button } from "react-native-paper";
 
 import Container from "../components/Container";
 import TeamAPI from "../API/TeamAPI.js";
@@ -22,7 +22,7 @@ class TeamDetails extends Component {
       membersList: null
     };
     //this.handleClickDelete = this.handleClickDelete.bind(this);
-    //this.handleClickAddMember = this.handleClickAddMember.bind(this);
+    this.handleClickAddMember = this.handleClickAddMember.bind(this);
   }
 
   async getTeamDetails() {
@@ -45,6 +45,12 @@ class TeamDetails extends Component {
 
     details = details[0];
     this.setState(details);
+  }
+
+  handleClickAddMember() {
+    this.props.navigation.navigate("TeamInvite", {
+      teamId: this.state.teamId,
+    });
   }
 
   payForTeam() {
@@ -87,6 +93,11 @@ class TeamDetails extends Component {
                 yet
               </Banner>
               <Title>{this.state.teamName}</Title>
+              {this.state.currentUser !== null && this.state.currentUser === this.state.leader ? (
+                <Button onPress={this.handleClickAddMember}>Add Member</Button>
+              ) : (
+                null
+              )}
               <Text>{"Leader: " + this.state.leader}</Text>
               {this.state.membersList !== null ? (
                 <Text>{"Members: " + this.state.membersList}</Text>

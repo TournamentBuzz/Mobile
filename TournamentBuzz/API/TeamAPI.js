@@ -42,7 +42,7 @@ export default class TeamAPI {
   static async inviteToTeam(teamId, email) {
     const res = await fetch(`${APIConfig.backendURL}/teams/invite`, {
       method: "POST",
-      headers: Authentication.withJWT(),
+      headers: await Authentication.withJWT(),
       body: JSON.stringify({ teamId, email })
     });
 
@@ -164,6 +164,20 @@ export default class TeamAPI {
     }
     const json = await res.json();
     return json.declineStatus;
+  }
+
+  static async getPlayerList() {
+    if (!(await Authentication.loggedIn())) return;
+    const res = await fetch(`${APIConfig.backendURL}/user`, {
+      method: "GET",
+      headers: await Authentication.withJWT(),
+    });
+    if (!res.ok) {
+      console.log(res);
+      throw new errors.UnexpectedError();
+    }
+    const json = await res.json();
+    return json.users;
   }
 
   static async payForTeam(teamId, token) {
