@@ -27,4 +27,18 @@ export default class TournamentAPI {
     const json = await res.json();
     return json.tournament;
   }
+
+  static async getUserTournaments() {
+    if (!(await Authentication.loggedIn())) return;
+    const res = await fetch(`${APIConfig.backendURL}/user/tournaments`, {
+      method: "GET",
+      headers: await Authentication.withJWT()
+    });
+    if (!res.ok) {
+      console.log(res);
+      throw new errors.UnexpectedError();
+    }
+    const json = await res.json();
+    return json.tournaments;
+  }
 }

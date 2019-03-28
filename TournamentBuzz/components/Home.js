@@ -4,6 +4,8 @@ import { Title } from "react-native-paper";
 import { CSComponent } from "react-central-state";
 
 import Authentication from "../API/Authentication";
+import UserTournamentList from "./UserTournamentList";
+import Container from "./Container";
 
 const styles = StyleSheet.create({
   view: {
@@ -34,13 +36,15 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={styles.view}>
+      <Container>
         {this.centralState.loggedIn ? (
-          <Title>You are not signed up for any tournaments</Title>
+          <UserTournamentList navigation={this.props.navigation} />
         ) : (
-          <Title>Login in to view your tournaments</Title>
+          <View style={styles.view}>
+            <Title>Login to view your tournaments</Title>
+          </View>
         )}
-      </View>
+      </Container>
     );
   }
 }

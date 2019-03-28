@@ -38,7 +38,7 @@ class Main extends Component {
   _handleIndexChange = index => this.setState({ index });
 
   _renderScene = BottomNavigation.SceneMap({
-    home: () => <Home />,
+    home: () => <Home navigation={this.props.navigation} />,
     explore: () => <TournamentList navigation={this.props.navigation} />,
     account: () => <Account />
   });
