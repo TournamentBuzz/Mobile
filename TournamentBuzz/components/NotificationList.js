@@ -14,6 +14,46 @@ class NotificationList extends Component {
     };
   }
 
+  async onRefresh() {
+    let pendingInvites = undefined;
+    try {
+      pendingInvites = await TeamAPI.getPendingInvites();
+    } catch (error) {
+      return;
+    }
+    if (pendingInvites === undefined || pendingInvites.length < 1) {
+      let message = <Title>No Notifications</Title>;
+      this.setState({ notificationList: message });
+      return;
+    }
+    let teamList = [];
+    for (let invite of pendingInvites) {
+      teamList.push(invite.teamId);
+    }
+
+    let list = [];
+    for (let team of teamList) {
+      let details = undefined;
+      try {
+        details = await TeamAPI.getTeam(team);
+      } catch (error) {
+        return;
+      }
+      if (details === undefined) {
+        return;
+      }
+      if (details.length < 1) {
+        return;
+      }
+      details = details[0];
+      let card = (
+        <NotificationCard key={team} id={team} name={details.teamName} />
+      );
+      list.push(card);
+    }
+    this.setState({ notificationList: list });
+  }
+
   async createNotificationList() {
     let pendingInvites = undefined;
     try {
@@ -49,7 +89,12 @@ class NotificationList extends Component {
       }
       details = details[0];
       let card = (
-        <NotificationCard key={team} id={team} name={details.teamName} />
+        <NotificationCard
+          key={team}
+          id={team}
+          name={details.teamName}
+          refreshList={this.onRefresh.bind(this)}
+        />
       );
       list.push(card);
     }
