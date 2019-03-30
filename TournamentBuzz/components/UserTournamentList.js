@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { View, ScrollView, RefreshControl } from "react-native";
 import { ActivityIndicator, Title } from "react-native-paper";
 
-import Container from "../components/Container";
-import TournamentCard from "./TournamentCard";
+import UserTournamentCard from "./UserTournamentCard";
 import TournamentAPI from "../API/TournamentAPI.js";
 
 class UserTournamentList extends Component {
@@ -34,11 +33,12 @@ class UserTournamentList extends Component {
     let list = [];
     for (let tournament of tournaments) {
       let card = (
-        <TournamentCard
+        <UserTournamentCard
           key={tournament.id}
           id={tournament.id}
           name={tournament.tournamentName}
           sponsor={tournament.creator}
+          role={tournament.role}
           date={new Date(Date.parse(tournament.startDate)).toDateString()}
           navigation={this.props.navigation}
         />
@@ -66,11 +66,12 @@ class UserTournamentList extends Component {
     let list = [];
     for (let tournament of tournaments) {
       let card = (
-        <TournamentCard
+        <UserTournamentCard
           key={tournament.id}
           id={tournament.id}
           name={tournament.tournamentName}
           sponsor={tournament.creator}
+          role={tournament.role}
           date={new Date(Date.parse(tournament.startDate)).toDateString()}
           navigation={this.props.navigation}
         />
