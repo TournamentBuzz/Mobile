@@ -22,7 +22,7 @@ class NotificationList extends Component {
       return;
     }
     if (pendingInvites === undefined || pendingInvites.length < 1) {
-      let message = <Title>No Notifications</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No Notifications</Title>;
       this.setState({ notificationList: message });
       return;
     }
@@ -59,12 +59,12 @@ class NotificationList extends Component {
     try {
       pendingInvites = await TeamAPI.getPendingInvites();
     } catch (error) {
-      let message = <Title>No Notifications</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No Notifications</Title>;
       this.setState({ notificationList: message });
       return;
     }
     if (pendingInvites === undefined || pendingInvites.length < 1) {
-      let message = <Title>No Notifications</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No Notifications</Title>;
       this.setState({ notificationList: message });
       return;
     }

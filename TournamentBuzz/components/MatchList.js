@@ -27,7 +27,7 @@ class MatchList extends Component {
       return;
     }
     if (matches.length < 1) {
-      let message = <Title>No matches</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No matches</Title>;
       this.setState({ matchList: message });
       return;
     }
@@ -49,17 +49,17 @@ class MatchList extends Component {
     try {
       matches = await MatchAPI.getMatches(this.props.navigation.getParam("tournamentId", null));
     } catch (error) {
-      let message = <Title>Error loading matches</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>Error loading matches</Title>;
       this.setState({ matchList: message });
       return;
     }
     if (matches === undefined) {
-      let message = <Title>Error loading matches</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>Error loading matches</Title>;
       this.setState({ matchList: message });
       return;
     }
     if (matches.length < 1) {
-      let message = <Title>No matches</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No matches</Title>;
       this.setState({ matchList: message });
       return;
     }

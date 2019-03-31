@@ -36,17 +36,17 @@ class ViewBracket extends React.Component {
     try {
       match = await MatchAPI.getMatches(this.props.tournamentId);
     } catch (error) {
-      let message = <Text>Error loading matches</Text>;
+      let message = <Text style={{ marginLeft: 10 }}>Error loading matches</Text>;
       this.setState({ matches: message });
       return;
     }
     if (match === undefined) {
-      let message = <Text>Error loading matches</Text>;
+      let message = <Text style={{ marginLeft: 10 }}>Error loading matches</Text>;
       this.setState({ matches: message });
       return;
     }
     if (match.length < 1) {
-      let message = <Text>No matches</Text>;
+      let message = <Text style={{ marginLeft: 10 }}>No matches</Text>;
       this.setState({ matches: message });
       return;
     }

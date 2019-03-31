@@ -68,14 +68,14 @@ function getDepth(matchesList, rootMatch) {
     return 1;
   } else if (rootMatch.feederA === null) {
     for (i = 0; i < matchesList.length; i++) {
-      if (matchesList[i].id === rootMatch.feederB) {
+      if (parseInt(matchesList[i].id) === parseInt(rootMatch.feederB)) {
         return 1 + getDepth(matchesList, matchesList[i]);
       }
     }
     return 1;
   } else if (rootMatch.feederB === null) {
     for (i = 0; i < matchesList.length; i++) {
-      if (matchesList[i].id === rootMatch.feederA) {
+      if (parseInt(matchesList[i].id) === parseInt(rootMatch.feederA)) {
         return 1 + getDepth(matchesList, matchesList[i]);
       }
     }
@@ -84,17 +84,17 @@ function getDepth(matchesList, rootMatch) {
     let feederA = null;
     let feederB = null;
     for (i = 0; i < matchesList.length; i++) {
-      if (matchesList[i].id === rootMatch.feederB) {
-        feederB == matchesList[i];
+      if (parseInt(matchesList[i].id) === parseInt(rootMatch.feederB)) {
+        feederB = matchesList[i];
       }
     }
     for (i = 0; i < matchesList.length; i++) {
-      if (matchesList[i].id === rootMatch.feederA) {
-        feederA == matchesList[i];
+      if (parseInt(matchesList[i].id) === parseInt(rootMatch.feederA)) {
+        feederA = matchesList[i];
       }
     }
-    const b = getDepth(matchesList, feederA);
-    const a = getDepth(matchesList, feederB);
+    const a = getDepth(matchesList, feederA);
+    const b = getDepth(matchesList, feederB);
     if (b > a) {
       return b + 1;
     } else {
@@ -180,7 +180,7 @@ class TournamentBracket extends React.Component {
       return (
         <ScrollView horizontal={true}>
             {matchStruct.map(matchList => (
-              <View key={matchList[0].id} style={{paddingBottom: 10, marginLeft: 5, marginRight: 5, marginBottom: 5, marginTop: 5, flex:1, flexDirection: 'column', justifyContent:'center' /* TODO: fix temporary spacing fix */}}>
+              <View key={matchList[0].id} style={{paddingBottom: 10, marginLeft: 5, marginRight: 5, marginBottom: 5, marginTop: 5, flex:1, flexDirection: 'column', justifyContent:'space-around' /* possible small misalignments */}}>
                 {matchList.map(matchItem => (
                   <View key={matchItem.id}>
                     <BracketCard
@@ -267,7 +267,7 @@ class TournamentBracket extends React.Component {
         </DataTable>
       );
     }
-    return (<Text>No Matches</Text>);
+    return (<Text style={{ marginLeft: 10 }}>No Matches</Text>);
   }
 
   render() {
@@ -276,8 +276,8 @@ class TournamentBracket extends React.Component {
     } catch (error) {
       return (
         <View>
-            <Text>Error displaying tournament bracket</Text>
-            <Text>{String(error)}</Text>
+            <Text style={{ marginLeft: 10 }}>Error displaying tournament bracket</Text>
+            <Text style={{ marginLeft: 10 }}>{String(error)}</Text>
         </View>
       );
     }

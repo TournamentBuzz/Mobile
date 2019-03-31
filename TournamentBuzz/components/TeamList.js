@@ -27,7 +27,7 @@ class TeamList extends Component {
       return;
     }
     if (teams.length < 1) {
-      let message = <Title>No teams</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No teams</Title>;
       this.setState({ teamList: message });
       return;
     }
@@ -50,17 +50,17 @@ class TeamList extends Component {
     try {
       teams = await TeamAPI.getTeams(this.props.tournamentId);
     } catch (error) {
-      let message = <Title>Error loading teams</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>Error loading teams</Title>;
       this.setState({ teamList: message });
       return;
     }
     if (teams === undefined) {
-      let message = <Title>Error loading teams</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>Error loading teams</Title>;
       this.setState({ teamList: message });
       return;
     }
     if (teams.length < 1) {
-      let message = <Title>No teams</Title>;
+      let message = <Title style={{ marginLeft: 10 }}>No teams</Title>;
       this.setState({ teamList: message });
       return;
     }
