@@ -104,9 +104,9 @@ class TournamentDetails extends Component {
               <Title>{this.state.tournamentName}</Title>
               <Text style={{fontSize: 16}}>{"Sponsor: " + this.state.creator}</Text>
               <Text style={{fontSize: 16}}>{"Location: " + this.state.location}</Text>
-              <Text style={{fontSize: 16}}>{"Tournament Details: " + this.state.tournamentType + ", " + this.state.scoringType}</Text>
-              <Text style={{fontSize: 16}}>{"Entry Cost: $" + this.state.entryCost}</Text>
-              <Text style={{fontSize: 16}}>{"Max Teams: " + this.state.maxTeams + " teams of at most " + this.state.maxTeamSize + " people"}</Text>
+              <Text style={{fontSize: 16}}>{"Style: " + this.state.tournamentType + ", " + this.state.scoringType}</Text>
+              <Text style={{fontSize: 16}}>{"Entry Fee: $" + this.state.entryCost}</Text>
+              <Text style={{fontSize: 16}}>{"Max Teams: " + this.state.maxTeams + " teams of at most " + this.state.maxTeamSize + " people" /* change to person for 1-size?*/}</Text>
               <Text style={{fontSize: 16}}>{"Duration: " + this.state.startDate + " - " + this.state.endDate}</Text>
             </View>
           )}

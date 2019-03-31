@@ -177,24 +177,24 @@ class TournamentBracket extends React.Component {
       }
       matchStruct = getStructure(matchesList, rootMatch, matchStruct, depth);
 
-      return (// foreach in matchStruct, list the items in that array level - need to fix size of card
+      return (
         <ScrollView horizontal={true}>
             {matchStruct.map(matchList => (
-              <View key={matchList[0].id} >
+              <View key={matchList[0].id} style={{paddingBottom: 10, marginLeft: 5, marginRight: 5, marginBottom: 5, marginTop: 5, flex:1, flexDirection: 'column', justifyContent:'center' /* TODO: fix temporary spacing fix */}}>
                 {matchList.map(matchItem => (
-                  //<Text key={matchItem.id}> {matchItem.id}</Text>
-                  <BracketCard key={matchItem.id} 
-                    tournamentMatch={matchItem}
-                    key={matchItem.id}
-                    navigation={this.props.navigation}
-                  />
+                  <View key={matchItem.id}>
+                    <BracketCard
+                      tournamentMatch={matchItem}
+                      key={matchItem.id}
+                      navigation={this.props.navigation}
+                    />
+                    <Text>{" "}</Text>
+                  </View>
                 ))}
               </View>
             ))}
         </ScrollView>
       );
-      return (<Text> This isn't ready yet :) </Text>);
-      /* return <Bracket game={matchesObject} />;*/
     }
     if (matchesList.length > 0 && isRoundRobin(matchesList)) {
       const teamResults = {};
@@ -228,7 +228,7 @@ class TournamentBracket extends React.Component {
           <DataTable.Header>
             <DataTable.Title />
               {teamArray[(this.state.curPage - 1)].map(team => (
-                <DataTable.Cell key={team}>{team}</DataTable.Cell>
+                <DataTable.Cell key={team}>{"Results for: " + team}</DataTable.Cell>
               ))}
           </DataTable.Header>
 
@@ -242,10 +242,10 @@ class TournamentBracket extends React.Component {
                         <Text>
                             {(() => {
                               if (teamResults[teamA][teamB] === true) {
-                                return "Win";
+                                return "Loss";
                               }
                               if (teamResults[teamA][teamB] === false) {
-                                return "Lose";
+                                return "Win";
                               }
                               return "Pending";
                             })()}{" "}
