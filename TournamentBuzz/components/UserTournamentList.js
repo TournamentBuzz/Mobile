@@ -34,7 +34,7 @@ class UserTournamentList extends Component {
     for (let tournament of tournaments) {
       let card = (
         <UserTournamentCard
-          key={tournament.id}
+          key={tournament.id + tournament.role}
           id={tournament.id}
           name={tournament.tournamentName}
           sponsor={tournament.creator}
@@ -67,7 +67,7 @@ class UserTournamentList extends Component {
     for (let tournament of tournaments) {
       let card = (
         <UserTournamentCard
-          key={tournament.id}
+          key={tournament.id + tournament.role}
           id={tournament.id}
           name={tournament.tournamentName}
           sponsor={tournament.creator}

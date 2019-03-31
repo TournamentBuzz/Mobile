@@ -4,12 +4,13 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Main from "./views/Main";
 import TournamentDetails from "./views/TournamentDetails";
 import TeamDetails from "./views/TeamDetails";
-import MatchList from "./components/MatchList"
+import MatchList from "./components/MatchList";
 import MatchDetails from "./views/MatchDetails";
 import TeamCreate from "./views/TeamCreate";
 import Notifications from "./views/Notifications";
 import TeamPayment from "./views/TeamPayment";
 import TeamInvite from "./views/TeamInvite";
+import MatchScore from "./views/MatchScore";
 
 const theme = {
   ...DefaultTheme,
@@ -29,7 +30,8 @@ const AppNavigator = createStackNavigator(
     TeamCreate: TeamCreate,
     Notifications: Notifications,
     TeamPayment: TeamPayment,
-    TeamInvite: TeamInvite
+    TeamInvite: TeamInvite,
+    MatchScore: MatchScore
   },
   {
     initialRouteName: "Home"
