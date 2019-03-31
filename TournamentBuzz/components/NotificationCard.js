@@ -10,26 +10,26 @@ class NotificationCard extends Component {
     this.acceptInvite = this.acceptInvite.bind(this);
   }
 
-  async acceptInvite(id) {
+  async acceptInvite(id, refreshList) {
     try {
       await TeamAPI.acceptInvite(id);
     } catch (error) {
       return;
     }
-    // refresh notification list
+    refreshList();
   }
 
-  async declineInvite(id) {
+  async declineInvite(id, refreshList) {
     try {
       await TeamAPI.declineInvite(id);
     } catch (error) {
       return;
     }
-    // refresh notification list
+    refreshList();
   }
 
   render() {
-    const { id, name } = this.props;
+    const { id, name, refreshList } = this.props;
     return (
       <Card>
         <Card.Content>
@@ -37,8 +37,12 @@ class NotificationCard extends Component {
           <Paragraph>You have been invited to join {name}</Paragraph>
         </Card.Content>
         <Card.Actions>
-          <Button onPress={() => this.declineInvite(id)}>Decline</Button>
-          <Button onPress={() => this.acceptInvite(id)}>Accept</Button>
+          <Button onPress={() => this.declineInvite(id, refreshList)}>
+            Decline
+          </Button>
+          <Button onPress={() => this.acceptInvite(id, refreshList)}>
+            Accept
+          </Button>
         </Card.Actions>
       </Card>
     );

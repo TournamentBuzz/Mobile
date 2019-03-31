@@ -26,6 +26,7 @@ class TeamCreate extends Component {
   async handleFormSubmit() {
     if (this.state.teamName !== null) {
       await TeamAPI.createTeam(this.state.tournamentId, this.state.teamName);
+      this.props.navigation.state.params.refresh();
       this.props.navigation.goBack();
     }
   }

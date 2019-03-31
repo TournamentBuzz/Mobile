@@ -25,6 +25,44 @@ class TeamDetails extends Component {
     this.handleClickAddMember = this.handleClickAddMember.bind(this);
   }
 
+  async onRefresh() {
+    let details = undefined;
+    try {
+      details = await TeamAPI.getTeam(this.state.teamId);
+    } catch (error) {
+      return;
+    }
+    if (details === undefined) {
+      return;
+    }
+    if (details.length < 1) {
+      return;
+    }
+    details = details[0];
+    this.setState(details);
+
+    let members = undefined;
+    try {
+      members = await TeamAPI.getTeamMembers(this.state.teamId);
+    } catch (error) {
+      return;
+    }
+    if (members === undefined) {
+      return;
+    }
+    if (members.length < 1) {
+      return;
+    }
+    let memberStr = "";
+    for (member of members) {
+      if (member.userEmail !== this.state.leader) {
+        memberStr += member.userEmail + ", ";
+      }
+    }
+    memberStr = memberStr.slice(0, -2);
+    this.setState({ membersList: memberStr });
+  }
+
   async getTeamDetails() {
     let details = undefined;
     try {
@@ -58,23 +96,24 @@ class TeamDetails extends Component {
     let memberStr = "";
     for (member of members) {
       if (member.userEmail !== this.state.leader) {
-        memberStr += member.userEmail + ", "
+        memberStr += member.userEmail + ", ";
       }
     }
     memberStr = memberStr.slice(0, -2);
-    this.setState({membersList: memberStr})
+    this.setState({ membersList: memberStr });
   }
 
   handleClickAddMember() {
     this.props.navigation.navigate("TeamInvite", {
-      teamId: this.state.teamId,
+      teamId: this.state.teamId
     });
   }
 
   payForTeam() {
     this.props.navigation.navigate("TeamPayment", {
       teamId: this.state.teamId,
-      entryCost: this.state.entryCost
+      entryCost: this.state.entryCost,
+      refresh: this.onRefresh.bind(this)
     });
   }
 
@@ -111,11 +150,10 @@ class TeamDetails extends Component {
                 yet
               </Banner>
               <Title>{this.state.teamName}</Title>
-              {this.state.currentUser !== null && this.state.currentUser === this.state.leader ? (
+              {this.state.currentUser !== null &&
+              this.state.currentUser === this.state.leader ? (
                 <Button onPress={this.handleClickAddMember}>Add Member</Button>
-              ) : (
-                null
-              )}
+              ) : null}
               <Text>{"Leader: " + this.state.leader}</Text>
               {this.state.membersList !== null ? (
                 <Text>{"Members: " + this.state.membersList}</Text>

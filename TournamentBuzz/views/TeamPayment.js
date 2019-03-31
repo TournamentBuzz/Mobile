@@ -61,13 +61,15 @@ class TeamPayment extends Component {
         var token = card.id;
         try {
           await TeamAPI.payForTeam(this.state.teamId, token);
+          this.props.navigation.state.params.refresh();
           this.props.navigation.goBack();
           return;
         } catch (error) {
           // charge unsuccessful
           this.setState({
             formError:
-              "An error occured processing your payment. Please check your card information and try again"
+              "An error occured processing your payment. Please check your card information and try again",
+            processing: false
           });
         }
       } else {
