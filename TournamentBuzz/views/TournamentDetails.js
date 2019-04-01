@@ -137,6 +137,7 @@ class TournamentDetails extends Component {
           <ViewBracket
             tournamentId={this.state.tournamentId}
             navigation={this.props.navigation}
+            refresh={this.state.refreshChildren}
           />
           <Button
             onPress={() =>

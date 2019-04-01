@@ -34,7 +34,7 @@ class EnterScoresButton extends Component {
             }
           }}
           open={this.state.open}
-          icon={this.state.open ? "cancel" : "note"} // if organizer, change to edit
+          icon={this.state.open ? "cancel" : "assignment"} // if organizer, change to edit
           actions={[
             // if organizer, include matches and details
             //{ icon: 'games', label: 'Match', onPress: () => console.log('Pressed ')},

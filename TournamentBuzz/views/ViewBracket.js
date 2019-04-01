@@ -31,6 +31,53 @@ class ViewBracket extends React.Component {
     await this.createMatchList();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh !== this.state.refresh) {
+      this.refreshList();
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.refresh !== prevState.refresh) {
+      return { refresh: nextProps.refresh };
+    } else return null;
+  }
+
+  async refreshList() {
+    let match = undefined;
+    try {
+      match = await MatchAPI.getMatches(this.props.tournamentId);
+    } catch (error) {
+      let message = <Text style={{ marginLeft: 10 }}>Error loading matches</Text>;
+      this.setState({ matches: message });
+      return;
+    }
+    if (match === undefined) {
+      let message = <Text style={{ marginLeft: 10 }}>Error loading matches</Text>;
+      this.setState({ matches: message });
+      return;
+    }
+    if (match.length < 1) {
+      let message = <Text style={{ marginLeft: 10 }}>No matches</Text>;
+      this.setState({ matches: message });
+      return;
+    }
+    teamSet = new Set();
+    try {
+      for (const m of match) {
+        const teamA = m.teamA.teamId;
+        const teamB = m.teamB.teamId;
+        teamSet.add(teamA);
+        teamSet.add(teamB);
+      }
+    } catch (error) {
+      // not round robin
+    }
+    const teams = Array.from(teamSet);
+    promote = await isPartOfTeam(teams);
+    this.setState({ matches: match, promoted: promote });
+  }
+
   async createMatchList() {
     let match = undefined;
     try {
