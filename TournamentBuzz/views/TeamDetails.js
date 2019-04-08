@@ -150,16 +150,16 @@ class TeamDetails extends Component {
                 yet
               </Banner>
               <Title>{this.state.teamName}</Title>
-              {this.state.currentUser !== null &&
-              this.state.currentUser === this.state.leader ? (
-                <Button onPress={this.handleClickAddMember}>Add Member</Button>
-              ) : null}
               <Text>{"Leader: " + this.state.leader}</Text>
               {this.state.membersList !== null ? (
                 <Text>{"Members: " + this.state.membersList}</Text>
               ) : (
                 <Text>{"-"}</Text>
               )}
+              {this.state.currentUser !== null &&
+              this.state.currentUser === this.state.leader ? (
+                <Button onPress={this.handleClickAddMember}>Add Member</Button>
+              ) : null}
             </View>
           )}
         </ScrollView>

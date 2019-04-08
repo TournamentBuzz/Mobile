@@ -125,46 +125,49 @@ class MatchScore extends Component {
   render() {
     return (
       <Container>
-        {this.state.loading === true ? (
-          <ActivityIndicator />
-        ) : (
-          <ScrollView>
-            <Title>
-              {this.state.teamA ? this.state.teamA.teamName : "TBD"} {" vs "}
-              {this.state.teamB ? this.state.teamB.teamName : "TBD"}
-            </Title>
-            <Text>{this.state.matchTime}</Text>
-            <Text>{this.state.location}</Text>
-            <TextInput
-              label={this.state.teamA ? this.state.teamA.teamName : "TBD"}
-              value={this.state.scoreA}
-              keyboardType="numeric"
-              onChangeText={scoreA =>
-                this.setState(prevState => ({
-                  formError: prevState.formError,
-                  scoreA: scoreA
-                }))
-              }
-            />
-            <TextInput
-              label={this.state.teamB ? this.state.teamB.teamName : "TBD"}
-              value={this.state.scoreB}
-              keyboardType="numeric"
-              onChangeText={scoreB =>
-                this.setState(prevState => ({
-                  formError: prevState.formError,
-                  scoreB: scoreB
-                }))
-              }
-            />
-            <Dropdown
-              label="Select Winner"
-              data={this.state.teamList}
-              onChangeText={value => this.onChangeHandler(value)}
-            />
-            <Button onPress={() => this.handleFormSubmit()}>Submit</Button>
-          </ScrollView>
-        )}
+        <View style={{ marginLeft: 8, marginRight: 8 }}>
+          {this.state.loading === true ? (
+            <ActivityIndicator />
+          ) : (
+            <ScrollView>
+              <Title>
+                {this.state.teamA ? this.state.teamA.teamName : "TBD"} {" vs "}
+                {this.state.teamB ? this.state.teamB.teamName : "TBD"}
+              </Title>
+              <Text>{this.state.matchTime}</Text>
+              <Text>{this.state.location}</Text>
+              <TextInput
+                label={this.state.teamA ? this.state.teamA.teamName : "TBD"}
+                value={`${this.state.scoreA}`}
+                keyboardType="numeric"
+                onChangeText={scoreA =>
+                  this.setState(prevState => ({
+                    formError: prevState.formError,
+                    scoreA: scoreA
+                  }))
+                }
+              />
+              <TextInput
+                label={this.state.teamB ? this.state.teamB.teamName : "TBD"}
+                value={`${this.state.scoreB}`}
+                keyboardType="numeric"
+                onChangeText={scoreB =>
+                  this.setState(prevState => ({
+                    formError: prevState.formError,
+                    scoreB: scoreB
+                  }))
+                }
+              />
+              <Dropdown
+                label="Select Winner"
+                data={this.state.teamList}
+                value={this.state.winner}
+                onChangeText={value => this.onChangeHandler(value)}
+              />
+              <Button onPress={() => this.handleFormSubmit()}>Submit</Button>
+            </ScrollView>
+          )}
+        </View>
       </Container>
     );
   }
