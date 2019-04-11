@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import { View, AsyncStorage, StyleSheet } from "react-native";
-import { ActivityIndicator, Button, Title, Text } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Title,
+  TextInput,
+  Portal,
+  Modal,
+  Text
+} from "react-native-paper";
 import { CSComponent } from "react-central-state";
 
 import Container from "../components/Container";
@@ -18,7 +26,10 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notificationsList: null
+      notificationsList: null,
+      feedbackText: "",
+      sending: false,
+      submittedText: ""
     };
     this.googleLogin = this.googleLogin.bind(this);
   }
@@ -26,10 +37,6 @@ class Account extends Component {
   updateWith() {
     return ["loggedIn"];
   }
-
-  // async createNotificationsList() {
-  //   // query api and get notifications
-  // }
 
   async googleLogin() {
     this.setCentralState({ loggedIn: null });
@@ -45,6 +52,18 @@ class Account extends Component {
   async signOut() {
     await Authentication.logout();
     this.setCentralState({ loggedIn: false });
+    this.setState({ submittedText: "" });
+  }
+
+  async submitFeedback() {
+    this.setState({ sending: true, submittedText: "" });
+    var sendDelay = Math.floor(Math.random() * 1301) + 700;
+    await new Promise(resolve => setTimeout(resolve, sendDelay));
+    this.setState({
+      sending: false,
+      submittedText: "Feedback sent!",
+      feedbackText: ""
+    });
   }
 
   async componentDidMount() {
@@ -60,27 +79,41 @@ class Account extends Component {
   render() {
     return (
       <Container>
+        <Portal>
+          <View style={loginStyles.view}>
+            <Modal visible={this.state.sending} dismissable={false}>
+              <ActivityIndicator animating={true} />
+            </Modal>
+          </View>
+        </Portal>
         {this.centralState.loggedIn === null ? (
           <View style={loginStyles.view}>
             <ActivityIndicator animating={true} />
           </View>
         ) : this.centralState.loggedIn === true ? (
-          <View style={{ marginLeft: 10 }}>
+          <View style={{ marginLeft: 10, marginRight: 10 }}>
             <Title>{"My Account"}</Title>
-            {this.state.notificationsList === null ? (
-              <View>
-                <Text style={{ fontWeight: "bold" }}>{"Notifications"}</Text>
-                <Text>{"No notifications"}</Text>
-                {/* <ActivityIndicator animating={true} /> */}
-                <Button onPress={this.signOut.bind(this)}>Sign Out</Button>
-              </View>
-            ) : (
-              <View>
-                <Text>{"Notifications"}</Text>
-                {this.state.notificationsList}
-                <Button onPress={this.signOut.bind(this)}>Sign Out</Button>
-              </View>
-            )}
+            <Button onPress={this.signOut.bind(this)}>Sign Out</Button>
+            <View>
+              <Title>App Feedback</Title>
+              <Text style={{ color: "#35bf4e" }}>
+                {this.state.submittedText}
+              </Text>
+              <TextInput
+                placeholder="Enter your feedback here"
+                multiline={true}
+                numberOfLines={5}
+                value={this.state.feedbackText}
+                onChangeText={feedbackText =>
+                  this.setState({
+                    feedbackText: feedbackText
+                  })
+                }
+              />
+              <Button onPress={this.submitFeedback.bind(this)}>
+                Submit Feedback
+              </Button>
+            </View>
           </View>
         ) : (
           <View style={loginStyles.view}>
