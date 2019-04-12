@@ -25,8 +25,8 @@ class MatchScore extends Component {
       matchName: null,
       teamA: {},
       teamB: {},
-      scoreA: null,
-      scoreB: null,
+      scoreA: "",
+      scoreB: "",
       winner: "0",
       loading: true
     };
@@ -77,6 +77,15 @@ class MatchScore extends Component {
     }
     if (details.location === null) {
       details.location = "Undetermined";
+    }
+    if (details.scoreA === null) {
+      details.scoreA = "";
+    }
+    if (details.scoreB === null) {
+      details.scoreB = "";
+    }
+    if (details.winner === null) {
+      details.winner = "0";
     }
     details.winner = "" + details.winner;
     this.setState(details);
