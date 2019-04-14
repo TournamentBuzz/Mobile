@@ -5,6 +5,7 @@ import { ActivityIndicator, Title } from "react-native-paper";
 import Container from "../components/Container";
 import TournamentCard from "./TournamentCard";
 import TournamentAPI from "../API/TournamentAPI.js";
+import { Analytics, PageHit } from "expo-analytics";
 
 class TournamentList extends Component {
   constructor(props) {
@@ -82,6 +83,8 @@ class TournamentList extends Component {
 
   async componentDidMount() {
     await this.createTournamentList();
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("TournamentList"));
   }
 
   render() {

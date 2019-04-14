@@ -8,6 +8,7 @@ import MatchList from "../components/MatchList";
 import TeamList from "../components/TeamList";
 import CreateButton from "../components/CreateButton";
 import ViewBracket from "../views/ViewBracket";
+import { Analytics, PageHit } from "expo-analytics";
 
 class TournamentDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -82,6 +83,8 @@ class TournamentDetails extends Component {
 
   async componentDidMount() {
     await this.getTournamentDetails();
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("TournamentDetails"));
   }
 
   render() {

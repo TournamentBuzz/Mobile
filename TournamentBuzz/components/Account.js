@@ -13,6 +13,7 @@ import { CSComponent } from "react-central-state";
 
 import Container from "../components/Container";
 import Authentication from "../API/Authentication";
+import { Analytics, PageHit, Event } from "expo-analytics";
 
 const loginStyles = StyleSheet.create({
   view: {
@@ -43,6 +44,7 @@ class Account extends Component {
     try {
       await Authentication.login();
       this.setCentralState({ loggedIn: true });
+      analytics.event(new Event("User", "Login"));
     } catch (e) {
       console.log("User cancelled signin");
       this.setCentralState({ loggedIn: false });
@@ -53,6 +55,7 @@ class Account extends Component {
     await Authentication.logout();
     this.setCentralState({ loggedIn: false });
     this.setState({ submittedText: "" });
+    analytics.event(new Event("User", "Logout"));
   }
 
   async submitFeedback() {
@@ -64,6 +67,7 @@ class Account extends Component {
       submittedText: "Feedback sent!",
       feedbackText: ""
     });
+    analytics.event(new Event("Feedback", "Submitted"));
   }
 
   async componentDidMount() {
@@ -74,6 +78,8 @@ class Account extends Component {
         this.setCentralState({ loggedIn: false });
       }
     }
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("Account"));
   }
 
   render() {

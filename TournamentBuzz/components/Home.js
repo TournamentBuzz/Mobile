@@ -6,6 +6,7 @@ import { CSComponent } from "react-central-state";
 import Authentication from "../API/Authentication";
 import UserTournamentList from "./UserTournamentList";
 import Container from "./Container";
+import { Analytics, PageHit } from "expo-analytics";
 
 const styles = StyleSheet.create({
   view: {
@@ -32,6 +33,8 @@ class Home extends Component {
         this.setCentralState({ loggedIn: false });
       }
     }
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("Home"));
   }
 
   render() {

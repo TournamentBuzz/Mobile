@@ -7,6 +7,7 @@ import MatchAPI from "../API/MatchAPI.js";
 import RefereeAPI from "../API/RefereeAPI.js";
 import EnterScoresButton from "../components/EnterScoresButton";
 import Authentication from "../API/Authentication";
+import { Analytics, PageHit } from "expo-analytics";
 
 class MatchDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -74,6 +75,8 @@ class MatchDetails extends Component {
       );
       this.setState({ isReferee: isReferee });
     }
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("MatchDetails"));
   }
 
   render() {

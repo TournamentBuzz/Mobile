@@ -11,6 +11,7 @@ import { Dropdown } from "react-native-material-dropdown";
 import Container from "../components/Container";
 import TournamentAPI from "../API/TournamentAPI";
 import MatchAPI from "../API/MatchAPI";
+import { Analytics, PageHit } from "expo-analytics";
 
 class MatchScore extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -129,6 +130,8 @@ class MatchScore extends Component {
       }
     ];
     this.setState({ teamList: data, loading: false });
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("MatchScore"));
   }
 
   render() {

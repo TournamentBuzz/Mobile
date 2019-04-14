@@ -5,6 +5,7 @@ import { Title, ActivityIndicator, Banner, Button } from "react-native-paper";
 import Container from "../components/Container";
 import TeamAPI from "../API/TeamAPI.js";
 import Authentication from "../API/Authentication";
+import { Analytics, PageHit } from "expo-analytics";
 
 class TeamDetails extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -121,6 +122,8 @@ class TeamDetails extends Component {
     const currentUser = await Authentication.getUID();
     this.setState({ currentUser: currentUser });
     await this.getTeamDetails();
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("TeamDetails"));
   }
 
   render() {

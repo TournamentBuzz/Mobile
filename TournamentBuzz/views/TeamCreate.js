@@ -10,6 +10,7 @@ import {
 
 import Container from "../components/Container";
 import TeamAPI from "../API/TeamAPI";
+import { Analytics, PageHit } from "expo-analytics";
 
 class TeamCreate extends Component {
   static navigationOptions = { headerStyle: { backgroundColor: "#b3a369" } };
@@ -29,6 +30,11 @@ class TeamCreate extends Component {
       this.props.navigation.state.params.refresh();
       this.props.navigation.goBack();
     }
+  }
+
+  componentDidMount() {
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("TeamCreate"));
   }
 
   render() {

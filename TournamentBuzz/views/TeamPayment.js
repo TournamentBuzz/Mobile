@@ -13,6 +13,7 @@ import { CreditCardInput } from "react-native-credit-card-input";
 
 import Container from "../components/Container";
 import TeamAPI from "../API/TeamAPI";
+import { Analytics, PageHit } from "expo-analytics";
 
 var stripe = require("stripe-client")("pk_test_X20OBRj4crG53yFIaOaoKOMw");
 
@@ -96,6 +97,11 @@ class TeamPayment extends Component {
       exp_year: exp_year,
       formError: ""
     });
+  }
+
+  componentDidMount() {
+    const analytics = new Analytics("UA-138304149-1");
+    analytics.hit(new PageHit("TeamPayment"));
   }
 
   render() {
